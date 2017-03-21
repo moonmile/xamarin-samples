@@ -1,3 +1,1 @@
-# xamarin-samples
-
-xamarin入門書のサンプルコード集
+# Xamarin 本のサンプルコード

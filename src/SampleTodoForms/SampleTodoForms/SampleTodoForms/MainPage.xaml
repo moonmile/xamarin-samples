@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:SampleTodoForms"
+             x:Class="SampleTodoForms.MainPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="設定" Clicked="tappedSetting" />
+        <ToolbarItem Text="新規" Clicked="tappedNew" />
+    </ContentPage.ToolbarItems>
+    <StackLayout>
+        <ListView x:Name="listview" 
+            ItemTapped="Handle_ItemTapped"
+            ItemSelected="Handle_ItemSelected">
+        <ListView.Header>
+            <StackLayout Padding="10" 
+                   Orientation="Horizontal"
+                   HorizontalOptions="FillAndExpand"
+                   BackgroundColor="#dadada">
+                <Label Text="Header"
+               HorizontalTextAlignment="Center"
+               HorizontalOptions="FillAndExpand"
+               TextColor="Black"
+               FontAttributes="Bold"/>
+            </StackLayout>
+        </ListView.Header>
+        <!--Built in Cells-->
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <TextCell Text="{Binding Id}"
+                  Detail="{Binding Text}"/>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+        <ListView.Footer>
+            <StackLayout Padding="10"
+                   Orientation="Horizontal"
+                   HorizontalOptions="FillAndExpand"
+                   BackgroundColor="#dadada">
+                <Label Text="Footer" 
+               HorizontalTextAlignment="Center" 
+               HorizontalOptions="FillAndExpand" 
+               TextColor="Black"
+               FontAttributes="Bold"/>
+            </StackLayout>
+        </ListView.Footer>
+    </ListView>
+    </StackLayout>
+</ContentPage>
