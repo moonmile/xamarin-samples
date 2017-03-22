@@ -13,8 +13,16 @@ namespace SampleTodo.iOS
     [Register ("SettingViewController")]
     partial class SettingViewController
     {
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIImageView img1 { get; set; }
+
         void ReleaseDesignerOutlets ()
         {
+            if (img1 != null) {
+                img1.Dispose ();
+                img1 = null;
+            }
         }
     }
 }
