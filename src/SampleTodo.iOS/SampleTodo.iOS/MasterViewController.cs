@@ -9,8 +9,7 @@ namespace SampleTodo.iOS
 {
     public partial class MasterViewController : UITableViewController
     {
-        DataSource dataSource;
-
+        List<ToDo> items;
         public MasterViewController(IntPtr handle) : base(handle)
         {
             Title = NSBundle.MainBundle.LocalizedString("Master", "Master");
@@ -23,7 +22,12 @@ namespace SampleTodo.iOS
             // Perform any additional setup after loading the view, typically from a nib.
             // NavigationItem.LeftBarButtonItem = EditButtonItem;
 
-            TableView.Source = dataSource = new DataSource(this);
+            items = new List<ToDo>();
+            items.Add(new ToDo() { Id = 1, Text = "item no.1" });
+            items.Add(new ToDo() { Id = 2, Text = "item no.2" });
+            items.Add(new ToDo() { Id = 3, Text = "item no.3" });
+
+            TableView.Source = new DataSource(this, items);
         }
 
         public override void DidReceiveMemoryWarning()
@@ -34,8 +38,8 @@ namespace SampleTodo.iOS
 
         void AddNewItem(object sender, EventArgs args)
         {
-            var item = new ToDo() { Id = dataSource.Objects.Count + 1, Text = DateTime.Now.ToString() };
-            dataSource.Objects.Insert(0, item);
+            var item = new ToDo() { Id = items.Count + 1, Text = DateTime.Now.ToString() };
+            items.Insert(0, item);
 
             using (var indexPath = NSIndexPath.FromRowSection(0, 0))
                 TableView.InsertRows(new[] { indexPath }, UITableViewRowAnimation.Automatic);
@@ -46,7 +50,7 @@ namespace SampleTodo.iOS
             if (segue.Identifier == "showDetail")
             {
                 var indexPath = TableView.IndexPathForSelectedRow;
-                var item = dataSource.Objects[indexPath.Row];
+                var item = items[indexPath.Row];
 
                 ((DetailViewController)segue.DestinationViewController).SetDetailItem(item);
             }
@@ -55,42 +59,29 @@ namespace SampleTodo.iOS
         class DataSource : UITableViewSource
         {
             static readonly NSString CellIdentifier = new NSString("Cell");
-            readonly List<ToDo> objects = new List<ToDo>();
+            List<ToDo> items;
             readonly MasterViewController controller;
 
-            public DataSource(MasterViewController controller)
+            public DataSource(MasterViewController controller, List<ToDo> items)
             {
-                objects = new List<ToDo>();
-                objects.Add(new ToDo() { Id = 1, Text = "item no.1" });
-                objects.Add(new ToDo() { Id = 2, Text = "item no.2" });
-                objects.Add(new ToDo() { Id = 3, Text = "item no.3" });
-
                 this.controller = controller;
+                this.items = items;
             }
-
-            public IList<ToDo> Objects
-            {
-                get { return objects; }
-            }
-
             // Customize the number of sections in the table view.
             public override nint NumberOfSections(UITableView tableView)
             {
                 return 1;
             }
-
             public override nint RowsInSection(UITableView tableview, nint section)
             {
-                return objects.Count;
+                return items.Count;
             }
 
             // Customize the appearance of table view cells.
             public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
             {
                 var cell = tableView.DequeueReusableCell(CellIdentifier, indexPath);
-
-                cell.TextLabel.Text = objects[indexPath.Row].ToString();
-
+                cell.TextLabel.Text = items[indexPath.Row].ToString();
                 return cell;
             }
 
@@ -105,7 +96,7 @@ namespace SampleTodo.iOS
                 if (editingStyle == UITableViewCellEditingStyle.Delete)
                 {
                     // Delete the row from the data source.
-                    objects.RemoveAt(indexPath.Row);
+                    items.RemoveAt(indexPath.Row);
                     controller.TableView.DeleteRows(new[] { indexPath }, UITableViewRowAnimation.Fade);
                 }
                 else if (editingStyle == UITableViewCellEditingStyle.Insert)
