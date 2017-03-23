@@ -33,9 +33,10 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView2" />
+            android:id="@+id/textView2"
+            android:layout_marginRight="128.5dp" />
         <NumberPicker
-            android:layout_width="match_parent"
+            android:layout_width="164.0dp"
             android:layout_height="127.0dp"
             android:id="@+id/numberPicker1"
             android:gravity="right"
