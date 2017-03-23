@@ -37,9 +37,15 @@ namespace SampleTodoXForms.Views
             }
         }
 
+        /// <summary>
+        /// 保存ボタンをタップ
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void Save_Clicked(object sender, EventArgs e)
         {
             //
         }
+
     }
 }
