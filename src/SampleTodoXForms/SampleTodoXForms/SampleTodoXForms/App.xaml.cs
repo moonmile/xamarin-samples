@@ -17,25 +17,18 @@ namespace SampleTodoXForms
 
         public static void SetMainPage()
         {
-            Current.MainPage = new NavigationPage(new MainPage());
-            /*
+            // Current.MainPage = new NavigationPage(new MainPage());
             Current.MainPage = new TabbedPage
             {
                 Children =
                 {
-                    new NavigationPage(new ItemsPage())
+                    new NavigationPage(new MainPage())
                     {
                         Title = "Browse",
                         Icon = Device.OnPlatform("tab_feed.png",null,null)
                     },
-                    new NavigationPage(new AboutPage())
-                    {
-                        Title = "About",
-                        Icon = Device.OnPlatform("tab_about.png",null,null)
-                    },
                 }
             };
-            */
         }
     }
 }

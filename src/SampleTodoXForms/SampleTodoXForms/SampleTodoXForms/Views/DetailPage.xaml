@@ -10,8 +10,20 @@
         <StackLayout Spacing="20" Padding="15">
             <Label Text="ID" FontSize="Medium" />
             <Label Text="{Binding Id}" FontSize="Small" />
-            <Label Text="Text" FontSize="Medium" />
+            
+            <Label Text="項目名" FontSize="Medium" />
             <Entry Text="{Binding Text}" FontSize="Small" />
+            
+            <Label Text="期日" FontSize="Medium" />
+            <Switch x:Name="swDue" IsToggled="{Binding UseDueDate}" Toggled="Switch_Toggled" />
+            <DatePicker x:Name="dpDue" Date="{Binding DispDueDate}" IsVisible="{Binding UseDueDate}" Format="yyyy-MM-dd" />
+
+            <Label Text="完了" FontSize="Medium" />
+            <Switch IsToggled="{Binding Completed}" />
+
+            <Label Text="作成日" FontSize="Medium" />
+            <Label Text="{Binding CreatedAt}" FontSize="Small" />
+        
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>    

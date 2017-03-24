@@ -17,25 +17,15 @@ namespace SampleTodoXForms.Views
         {
             InitializeComponent();
         }
-        public DetailPage(ToDo item)
+        public DetailPage(ToDo item, Action saved = null )
         {
             InitializeComponent();
             this.BindingContext = _item = item;
+            this._saved = saved;
         }
 
-        private ToDo _item;
-        public ToDo Item
-        {
-            get
-            {
-                return _item;
-            }
-            set
-            {
-                _item = value;
-                this.BindingContext = _item;
-            }
-        }
+        ToDo _item;
+        Action _saved;
 
         /// <summary>
         /// 保存ボタンをタップ
@@ -44,8 +34,48 @@ namespace SampleTodoXForms.Views
         /// <param name="e"></param>
         void Save_Clicked(object sender, EventArgs e)
         {
-            //
+            // 元に戻る
+            this.Navigation.PopAsync();
+            // 保存時のコールバックを呼び出し
+            if ( this._saved != null )
+            {
+                this._saved();
+            }
+        }
+        /// <summary>
+        /// 戻るボタンを押したとき
+        /// </summary>
+        /// <returns></returns>
+        protected override bool OnBackButtonPressed()
+        {
+            // 保存時のコールバックを呼び出し
+            if (this._saved != null)
+            {
+                this._saved();
+            }
+            return base.OnBackButtonPressed();
         }
 
+        /// <summary>
+        /// 期日のトグルボタン
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Switch_Toggled(object sender, ToggledEventArgs e)
+        {
+            if ( swDue.IsToggled )
+            {
+                if (_item.DueDate == null)
+                {
+                    _item.DueDate = DateTime.Now;
+                }
+                dpDue.IsVisible = true;
+            }
+            else
+            {
+                _item.DueDate = null;
+                dpDue.IsVisible = false;
+            }
+        }
     }
 }

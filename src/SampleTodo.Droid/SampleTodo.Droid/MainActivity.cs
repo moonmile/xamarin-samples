@@ -73,8 +73,17 @@ namespace SampleTodo.Droid
     /// </summary>
     public class ToDo
     {
+        // 識別子
         public int Id { get; set; }
+        // 内容
         public string Text { get; set; }
+        // 完了
+        public bool Completed { get; set; }
+        // 指定日時
+        public DateTime DesignatedDate { get; set; }
+        // 作成日
+        public DateTime CreatedDate { get; set; }
+
     }
     public class TodoAdapter : BaseAdapter<ToDo>
     {
@@ -117,9 +126,8 @@ namespace SampleTodo.Droid
                 view = _activity.LayoutInflater.Inflate(Android.Resource.Layout.SimpleListItem2, null);
             }
             var it = _items[position];
-            view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = "-";
+            view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = it.DesignatedDate.ToString("yyyy-mm-dd");
             view.FindViewById<TextView>(Android.Resource.Id.Text2).Text = it.Text;
-
             return view;
         }
     }
