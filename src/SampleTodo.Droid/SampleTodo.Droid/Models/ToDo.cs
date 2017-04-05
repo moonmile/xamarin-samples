@@ -1,20 +1,26 @@
-ï»¿using SampleTodoXForms.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace SampleTodoXForms.Models
+using Android.App;
+using Android.Content;
+using Android.OS;
+using Android.Runtime;
+using Android.Views;
+using Android.Widget;
+using SampleTodo.Droid.Helpers;
+
+namespace SampleTodo.Droid.Models
 {
     /// <summary>
-    /// ToDo ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚¯ãƒ©ã‚¹
+    /// ToDo ‚ÌƒAƒCƒeƒ€ƒNƒ‰ƒX
     /// </summary>
     public class ToDo : ObservableObject
     {
-        // ãƒ¦ãƒ‹ãƒ¼ã‚¯ID
+        // ƒ†ƒj[ƒNID
         public int Id { get; set; }
-        // é …ç›®å
+        // €–Ú–¼
         string text;
         public string Text
         {
@@ -22,11 +28,13 @@ namespace SampleTodoXForms.Models
             set { SetProperty(ref text, value); }
         }
 
-        // æœŸæ—¥
+        // Šú“ú
         DateTime? dueDate;
-        public DateTime? DueDate {
+        public DateTime? DueDate
+        {
             get { return dueDate; }
-            set {
+            set
+            {
                 SetProperty(ref dueDate, value);
                 this.OnPropertyChanged("DispDueDate");
                 this.OnPropertyChanged("StrDueDate");
@@ -57,18 +65,18 @@ namespace SampleTodoXForms.Models
                 return this.DueDate == null ? "" : DueDate.Value.ToString("yyyy-MM-dd");
             }
         }
-        // å®Œäº†
+        // Š®—¹
         public bool Completed { get; set; }
-        // ä½œæˆæ—¥
+        // ì¬“ú
         public DateTime CreatedAt { get; set; }
 
 
         /// <summary>
-        /// ç·¨é›†ç”¨ã®ã‚³ãƒ”ãƒ¼ãƒ¡ã‚½ãƒƒãƒ‰
+        /// •ÒW—p‚ÌƒRƒs[ƒƒ\ƒbƒh
         /// </summary>
         /// <param name="target"></param>
         /// <returns></returns>
-        public ToDo Copy( ToDo target = null )
+        public ToDo Copy(ToDo target = null)
         {
             if (target == null)
             {
@@ -84,13 +92,13 @@ namespace SampleTodoXForms.Models
     }
 
     /// <summary>
-    /// è¨­å®šã‚¯ãƒ©ã‚¹
+    /// İ’èƒNƒ‰ƒX
     /// </summary>
     public class Setting
     {
-        // å®Œäº†ã®è¡¨ç¤º
+        // Š®—¹‚Ì•\¦
         public bool DispCompleted { get; set; }
-        // è¡¨ç¤ºé † (0:ä½œæˆé †, 1:é …ç›®åé †, 2:æœŸæ—¥é †)
+        // •\¦‡ (0:ì¬‡, 1:€–Ú–¼‡, 2:Šú“ú‡)
         public int SortOrder { get; set; }
     }
 }

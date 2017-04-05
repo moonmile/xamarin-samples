@@ -22,7 +22,7 @@
             <Switch IsToggled="{Binding Completed}" />
 
             <Label Text="作成日" FontSize="Medium" />
-            <Label Text="{Binding CreatedAt}" FontSize="Small" />
+            <Label Text="{Binding CreatedAt, StringFormat='{0:yyyy-MM-dd hh:mm}'}" FontSize="Small"/>
         
         </StackLayout>
     </ContentPage.Content>

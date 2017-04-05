@@ -53,7 +53,12 @@ namespace SampleTodoXForms.Views
         /// <returns></returns>
         protected override bool OnBackButtonPressed()
         {
-            // 戻るボタンのときは変更しない
+            // 戻るボタンでも反映する
+            if (_callback != null)
+            {
+                // コールバックの呼び出し
+                _callback();
+            }
             return base.OnBackButtonPressed();
         }
         /// <summary>

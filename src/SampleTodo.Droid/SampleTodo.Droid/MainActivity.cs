@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using Android.Views;
 using Android.Content;
 using System;
+using SampleTodo.Droid.Models;
+using Android.Runtime;
 
 namespace SampleTodo.Droid
 {
@@ -18,10 +20,11 @@ namespace SampleTodo.Droid
             // Set our view from the "main" layout resource
             SetContentView (Resource.Layout.Main);
 
-            items = new List<ToDo>();
-            items.Add(new ToDo() { Id = 1, Text = "item no.1" });
-            items.Add(new ToDo() { Id = 2, Text = "item no.2" });
-            items.Add(new ToDo() { Id = 3, Text = "item no.3" });
+            var lst = new List<ToDo>();
+            lst.Add(new ToDo() { Id = 1, Text = "item no.1", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
+            lst.Add(new ToDo() { Id = 2, Text = "item no.2", DueDate = new DateTime(2017, 5, 3), CreatedAt = new DateTime(2017, 3, 2) });
+            lst.Add(new ToDo() { Id = 3, Text = "item no.3", DueDate = new DateTime(2017, 5, 2), CreatedAt = new DateTime(2017, 3, 3) });
+            items = new ToDoFiltableCollection(lst);
 
             listview = FindViewById<ListView>(Resource.Id.tableview);
             listview.Adapter = new TodoAdapter(this, items);
@@ -34,64 +37,90 @@ namespace SampleTodo.Droid
             btnSetting.Click += BtnSetting_Click;
         }
 
+        // 表示するデータ
+        ToDoFiltableCollection items;
+
+        // 設定
+        Setting setting = new Setting()
+        {
+            DispCompleted = true,
+            SortOrder = 0,              // 作成日順
+        };
+
+        ListView listview;
+        Button btnNew, btnSetting;
+
         /// <summary>
-        /// アイテムがクリックされたとき
+        /// 項目を選択したとき
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Listview_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            var todo = items[e.Position];
+            var item = items[e.Position];
             var intent = new Intent(this, typeof(DetailActivity));
-            intent.PutExtra("id", todo.Id);
-            intent.PutExtra("text", todo.Text);
-            StartActivity(intent);
+            var data = Newtonsoft.Json.JsonConvert.SerializeObject(item);
+            intent.PutExtra("data", data);
+            StartActivityForResult(intent,1);
         }
-
+        /// <summary>
+        /// 新規ボタンをタップ
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BtnNew_Click(object sender, System.EventArgs e)
+        {
+            var item = new ToDo()
+            {
+                Id = items.Count + 1,
+                Text = "New ToDo",
+                DueDate = null,         // 期限なし
+                Completed = false,
+                CreatedAt = DateTime.Now
+            };
+            var intent = new Intent(this, typeof(DetailActivity));
+            var data = Newtonsoft.Json.JsonConvert.SerializeObject(item);
+            intent.PutExtra("data", data);
+            StartActivityForResult(intent, 2);
+        }
+        /// <summary>
+        /// 設定ボタンをタップ
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnSetting_Click(object sender, System.EventArgs e)
         {
             var intent = new Intent(this, typeof(SettingActivity));
-            StartActivity(intent);
+            intent.PutExtra("DispCompleted", setting.DispCompleted);
+            intent.PutExtra("SortOrder", setting.SortOrder);
+            StartActivityForResult(intent, 3);
         }
 
-        private void BtnNew_Click(object sender, System.EventArgs e)
+        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
-            // var intent = new Intent(this, typeof(DetailActivity));
-            // StartActivity(intent);
-
-            items.Insert(0, new ToDo() { Id = items.Count + 1, Text = DateTime.Now.ToString() });
-            listview.Adapter = new TodoAdapter(this, items);
+            base.OnActivityResult(requestCode, resultCode, data);
+            switch (requestCode)
+            {
+                case 1: // 項目を選択時
+                    break;
+                case 2: // 新規作成時
+                    break;
+                case 3: // 設定画面からの戻り
+                    break;
+                default:
+                    break;
+            }
         }
 
-        List<ToDo> items;
-        ListView listview;
-        Button btnNew, btnSetting;
     }
 
-    /// <summary>
-    /// ToDo用のデータクラス
-    /// </summary>
-    public class ToDo
-    {
-        // 識別子
-        public int Id { get; set; }
-        // 内容
-        public string Text { get; set; }
-        // 完了
-        public bool Completed { get; set; }
-        // 指定日時
-        public DateTime DesignatedDate { get; set; }
-        // 作成日
-        public DateTime CreatedDate { get; set; }
-
-    }
     public class TodoAdapter : BaseAdapter<ToDo>
     {
 
         Activity _activity;
-        List<ToDo> _items;
+        ToDoFiltableCollection _items;
 
-        public TodoAdapter(Activity act, List<ToDo> items)
+        public TodoAdapter(Activity act, ToDoFiltableCollection items)
         {
             _activity = act;
             _items = items;
@@ -126,7 +155,7 @@ namespace SampleTodo.Droid
                 view = _activity.LayoutInflater.Inflate(Android.Resource.Layout.SimpleListItem2, null);
             }
             var it = _items[position];
-            view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = it.DesignatedDate.ToString("yyyy-mm-dd");
+            view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = it.DueDate == null ? "--" : it.DueDate.Value.ToString("yyyy-MM-dd");
             view.FindViewById<TextView>(Android.Resource.Id.Text2).Text = it.Text;
             return view;
         }

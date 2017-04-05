@@ -25,9 +25,9 @@ namespace SampleTodo.Droid
             var id = this.Intent.GetIntExtra("id",0);
             var text = this.Intent.GetStringExtra("text");
 
-            var text2 = FindViewById<TextView>(Resource.Id.textView2);
+            var text2 = FindViewById<TextView>(Resource.Id.textId);
             text2.Text = id.ToString();
-            var text4 = FindViewById<TextView>(Resource.Id.textView4);
+            var text4 = FindViewById<TextView>(Resource.Id.textText);
             text4.Text = text;
         }
     }

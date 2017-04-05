@@ -20,11 +20,12 @@ namespace SampleTodoXForms.Views
         public DetailPage(ToDo item, Action saved = null )
         {
             InitializeComponent();
-            this.BindingContext = _item = item;
+            this.BindingContext = _item = item.Copy();
             this._saved = saved;
+            this._item_org = item;
         }
 
-        ToDo _item;
+        ToDo _item, _item_org;
         Action _saved;
 
         /// <summary>
@@ -36,6 +37,8 @@ namespace SampleTodoXForms.Views
         {
             // 元に戻る
             this.Navigation.PopAsync();
+            // 変更結果を保存する
+            _item.Copy(_item_org);
             // 保存時のコールバックを呼び出し
             if ( this._saved != null )
             {
@@ -48,11 +51,7 @@ namespace SampleTodoXForms.Views
         /// <returns></returns>
         protected override bool OnBackButtonPressed()
         {
-            // 保存時のコールバックを呼び出し
-            if (this._saved != null)
-            {
-                this._saved();
-            }
+            // 保存せず前の画面に戻る
             return base.OnBackButtonPressed();
         }
 

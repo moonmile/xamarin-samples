@@ -18,13 +18,12 @@ namespace SampleTodoXForms.Views
         public MainPage()
         {
             InitializeComponent();
-            // items = new ObservableCollection<ToDo>(); // MVVM時
+            // items = new ObservableCollection<ToDo>(); // 単純なMVVMパターンの場合
             // 最初のアイテムを追加
             var lst = new List<ToDo>();
             lst.Add(new ToDo() { Id = 1, Text = "item no.1", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
             lst.Add(new ToDo() { Id = 2, Text = "item no.2", DueDate = new DateTime(2017, 5, 3), CreatedAt = new DateTime(2017, 3, 2) });
             lst.Add(new ToDo() { Id = 3, Text = "item no.3", DueDate = new DateTime(2017, 5, 2), CreatedAt = new DateTime(2017, 3, 3) });
-            // this.listView.ItemsSource = items = new ToDoFiltableCollection(lst);
 
             viewModel = new MainViewModel();
             viewModel.Items = items = new ToDoFiltableCollection(lst);
@@ -55,7 +54,7 @@ namespace SampleTodoXForms.Views
             var item = args.SelectedItem as ToDo;
             if (item == null)
                 return;
-            await Navigation.PushAsync(new DetailPage(item, () => items.Update()));
+            await Navigation.PushAsync(new DetailPage(item, () => items.UpdateFilter()));
             listView.SelectedItem = null;
 
         }
@@ -75,7 +74,7 @@ namespace SampleTodoXForms.Views
                 CreatedAt = DateTime.Now
             };
             await Navigation.PushAsync(new DetailPage(item, ()=> {
-                items.Insert(0, item);
+                items.Add(item);
             }));
         }
 

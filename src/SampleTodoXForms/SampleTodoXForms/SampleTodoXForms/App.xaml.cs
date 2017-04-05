@@ -17,7 +17,10 @@ namespace SampleTodoXForms
 
         public static void SetMainPage()
         {
-            // Current.MainPage = new NavigationPage(new MainPage());
+            Current.MainPage = new NavigationPage(new MainPage());
+
+            /// UWPの場合は、ツールバーが消えてしまうので、TabbedPage を入れる
+            /*
             Current.MainPage = new TabbedPage
             {
                 Children =
@@ -29,6 +32,7 @@ namespace SampleTodoXForms
                     },
                 }
             };
+            */
         }
     }
 }
