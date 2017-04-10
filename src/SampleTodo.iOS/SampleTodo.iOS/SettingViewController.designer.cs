@@ -1,4 +1,4 @@
-﻿// WARNING
+// WARNING
 //
 // This file has been generated automatically by Xamarin Studio from the outlets and
 // actions declared in your storyboard file.
@@ -10,28 +10,32 @@ using System.CodeDom.Compiler;
 
 namespace SampleTodo.iOS
 {
-	[Register("SettingViewController")]
-	partial class SettingViewController
-	{
-		[Outlet]
-		[GeneratedCode("iOS Designer", "1.0")]
-		UIKit.UISwitch swDispCompleted { get; set; }
-		[Outlet]
-		[GeneratedCode("iOS Designer", "1.0")]
-		UIKit.UIPickerView pkOrder { get; set; }
-		void ReleaseDesignerOutlets()
-		{
-			if (swDispCompleted != null)
-			{
-				swDispCompleted.Dispose();
-				swDispCompleted = null;
-			}
+    [Register ("SettingViewController")]
+    partial class SettingViewController
+    {
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIPickerView pkOrder { get; set; }
 
-			if (pkOrder != null)
-			{
-				pkOrder.Dispose();
-				pkOrder = null;
-			}
-		}
-	}
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UISwitch swDispCompleted { get; set; }
+
+        [Action ("UIButton323_TouchUpInside:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void UIButton323_TouchUpInside (UIKit.UIButton sender);
+
+        void ReleaseDesignerOutlets ()
+        {
+            if (pkOrder != null) {
+                pkOrder.Dispose ();
+                pkOrder = null;
+            }
+
+            if (swDispCompleted != null) {
+                swDispCompleted.Dispose ();
+                swDispCompleted = null;
+            }
+        }
+    }
 }
