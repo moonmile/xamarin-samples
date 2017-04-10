@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using UIKit;
 using Foundation;
 using CoreGraphics;
+using SampleTodo.iOS.Models;
 
 namespace SampleTodo.iOS
 {
     public partial class MasterViewController : UITableViewController
     {
-        List<ToDo> items;
         public MasterViewController(IntPtr handle) : base(handle)
         {
             Title = NSBundle.MainBundle.LocalizedString("Master", "Master");
@@ -22,13 +22,25 @@ namespace SampleTodo.iOS
             // Perform any additional setup after loading the view, typically from a nib.
             // NavigationItem.LeftBarButtonItem = EditButtonItem;
 
-            items = new List<ToDo>();
-            items.Add(new ToDo() { Id = 1, Text = "item no.1" });
-            items.Add(new ToDo() { Id = 2, Text = "item no.2" });
-            items.Add(new ToDo() { Id = 3, Text = "item no.3" });
+            var lst = new List<ToDo>();
+            lst.Add(new ToDo() { Id = 1, Text = "item no.1", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
+            lst.Add(new ToDo() { Id = 2, Text = "item no.2", DueDate = new DateTime(2017, 5, 3), CreatedAt = new DateTime(2017, 3, 2) });
+            lst.Add(new ToDo() { Id = 3, Text = "item no.3", DueDate = new DateTime(2017, 5, 2), CreatedAt = new DateTime(2017, 3, 3) });
+            lst.Add(new ToDo() { Id = 4, Text = "item no.4", DueDate = null, CreatedAt = new DateTime(2017, 3, 4) });
+            items = new ToDoFiltableCollection(lst);
 
             TableView.Source = new DataSource(this, items);
         }
+
+        // 表示するデータ
+        ToDoFiltableCollection items;
+
+        // 設定
+        Setting setting = new Setting()
+        {
+            DispCompleted = true,
+            SortOrder = 0,              // 作成日順
+        };
 
         public override void DidReceiveMemoryWarning()
         {
@@ -36,17 +48,14 @@ namespace SampleTodo.iOS
             // Release any cached data, images, etc that aren't in use.
         }
 
-        void AddNewItem(object sender, EventArgs args)
-        {
-            var item = new ToDo() { Id = items.Count + 1, Text = DateTime.Now.ToString() };
-            items.Insert(0, item);
-
-            using (var indexPath = NSIndexPath.FromRowSection(0, 0))
-                TableView.InsertRows(new[] { indexPath }, UITableViewRowAnimation.Automatic);
-        }
-
+        /// <summary>
+        /// セグエの実行時
+        /// </summary>
+        /// <param name="segue"></param>
+        /// <param name="sender"></param>
         public override void PrepareForSegue(UIStoryboardSegue segue, NSObject sender)
         {
+            /// 項目を選択したとき
             if (segue.Identifier == "showDetail")
             {
                 var indexPath = TableView.IndexPathForSelectedRow;
@@ -56,13 +65,34 @@ namespace SampleTodo.iOS
             }
         }
 
+        /// <summary>
+        /// 新規ボタンをタップ
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        void AddNewItem(object sender, EventArgs args)
+        {
+            var item = new ToDo()
+            {
+                Id = items.Count + 1,
+                Text = "New ToDo",
+                DueDate = null,         // 期限なし
+                Completed = false,
+                CreatedAt = DateTime.Now
+            };
+
+            // ビューを更新
+            using (var indexPath = NSIndexPath.FromRowSection(0, 0))
+                TableView.InsertRows(new[] { indexPath }, UITableViewRowAnimation.Automatic);
+        }
+
         class DataSource : UITableViewSource
         {
             static readonly NSString CellIdentifier = new NSString("Cell");
-            List<ToDo> items;
+            ToDoFiltableCollection items;
             readonly MasterViewController controller;
 
-            public DataSource(MasterViewController controller, List<ToDo> items)
+            public DataSource(MasterViewController controller, ToDoFiltableCollection items)
             {
                 this.controller = controller;
                 this.items = items;
@@ -112,16 +142,6 @@ namespace SampleTodo.iOS
         partial void UIBarButtonItem106_Activated(UIBarButtonItem sender)
         {
             AddNewItem(sender, null);
-        }
-    }
-    public class ToDo
-    {
-        public int Id { get; set; }
-        public string Text { get; set; }
-
-        public override string ToString()
-        {
-            return this.Text;
         }
     }
 }
