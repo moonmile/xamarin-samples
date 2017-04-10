@@ -225,7 +225,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="設定" id="105"/>
                     <connections>
-                        <outlet property="swDispCompeted" destination="315" id="name-outlet-315"/>
+                        <outlet property="swDispCompleted" destination="315" id="name-outlet-315"/>
                         <outlet property="pkOrder" destination="316" id="name-outlet-316"/>
                     </connections>
                 </viewController>

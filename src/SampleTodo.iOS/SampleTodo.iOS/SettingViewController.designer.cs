@@ -10,19 +10,28 @@ using System.CodeDom.Compiler;
 
 namespace SampleTodo.iOS
 {
-    [Register ("SettingViewController")]
-    partial class SettingViewController
-    {
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIImageView img1 { get; set; }
+	[Register("SettingViewController")]
+	partial class SettingViewController
+	{
+		[Outlet]
+		[GeneratedCode("iOS Designer", "1.0")]
+		UIKit.UISwitch swDispCompleted { get; set; }
+		[Outlet]
+		[GeneratedCode("iOS Designer", "1.0")]
+		UIKit.UIPickerView pkOrder { get; set; }
+		void ReleaseDesignerOutlets()
+		{
+			if (swDispCompleted != null)
+			{
+				swDispCompleted.Dispose();
+				swDispCompleted = null;
+			}
 
-        void ReleaseDesignerOutlets ()
-        {
-            if (img1 != null) {
-                img1.Dispose ();
-                img1 = null;
-            }
-        }
-    }
+			if (pkOrder != null)
+			{
+				pkOrder.Dispose();
+				pkOrder = null;
+			}
+		}
+	}
 }
