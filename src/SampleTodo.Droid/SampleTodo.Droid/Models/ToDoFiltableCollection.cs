@@ -50,9 +50,24 @@ namespace SampleTodo.Droid.Models
         }
 
         /// <summary>
-        /// 項目のアップデート
+        /// IDを指定して項目を更新する
         /// </summary>
-        public void Update()
+        /// <param name="id"></param>
+        /// <param name="item"></param>
+        public void Update(int id, ToDo item)
+        {
+            var it = _items.First(x => x.Id == id);
+            if (it != null)
+            {
+                item.Copy(it);
+                UpdateFilter();
+            }
+        }
+
+        /// <summary>
+        /// ソート状態のアップデート
+        /// </summary>
+        public void UpdateFilter()
         {
             // ソートを反映させる
             SetFilter(_dispComplted, _sortOrder);

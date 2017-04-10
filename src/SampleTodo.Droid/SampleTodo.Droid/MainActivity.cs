@@ -24,10 +24,11 @@ namespace SampleTodo.Droid
             lst.Add(new ToDo() { Id = 1, Text = "item no.1", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
             lst.Add(new ToDo() { Id = 2, Text = "item no.2", DueDate = new DateTime(2017, 5, 3), CreatedAt = new DateTime(2017, 3, 2) });
             lst.Add(new ToDo() { Id = 3, Text = "item no.3", DueDate = new DateTime(2017, 5, 2), CreatedAt = new DateTime(2017, 3, 3) });
+            lst.Add(new ToDo() { Id = 4, Text = "item no.4", DueDate = null, CreatedAt = new DateTime(2017, 3, 4) });
             items = new ToDoFiltableCollection(lst);
 
             listview = FindViewById<ListView>(Resource.Id.tableview);
-            listview.Adapter = new TodoAdapter(this, items);
+            listview.Adapter = adapter = new TodoAdapter(this, items);
             listview.ItemClick += Listview_ItemClick;
 
             btnNew = FindViewById<Button>(Resource.Id.buttonNew);
@@ -49,6 +50,7 @@ namespace SampleTodo.Droid
 
         ListView listview;
         Button btnNew, btnSetting;
+        TodoAdapter adapter;
 
         /// <summary>
         /// 項目を選択したとき
@@ -59,6 +61,7 @@ namespace SampleTodo.Droid
         {
             var item = items[e.Position];
             var intent = new Intent(this, typeof(DetailActivity));
+            // データをシリアライズして渡す
             var data = Newtonsoft.Json.JsonConvert.SerializeObject(item);
             intent.PutExtra("data", data);
             StartActivityForResult(intent,1);
@@ -79,6 +82,7 @@ namespace SampleTodo.Droid
                 CreatedAt = DateTime.Now
             };
             var intent = new Intent(this, typeof(DetailActivity));
+            // データをシリアライズして渡す
             var data = Newtonsoft.Json.JsonConvert.SerializeObject(item);
             intent.PutExtra("data", data);
             StartActivityForResult(intent, 2);
@@ -102,10 +106,36 @@ namespace SampleTodo.Droid
             switch (requestCode)
             {
                 case 1: // 項目を選択時
+                    if ( resultCode == Result.Ok )
+                    {
+                        var v = data.GetStringExtra("data");
+                        var item = Newtonsoft.Json.JsonConvert.DeserializeObject<ToDo>(v);
+                        // データを更新する
+                        items.Update(item.Id, item);
+                        // アダプターを更新
+                        adapter.NotifyDataSetChanged();
+                    }
                     break;
                 case 2: // 新規作成時
+                    if (resultCode == Result.Ok)
+                    {
+                        var v = data.GetStringExtra("data");
+                        var item = Newtonsoft.Json.JsonConvert.DeserializeObject<ToDo>(v);
+                        // データを更新する
+                        items.Add(item);
+                        // アダプターを更新
+                        adapter.NotifyDataSetChanged();
+                    }
                     break;
                 case 3: // 設定画面からの戻り
+                    if ( resultCode == Result.Ok )
+                    {
+                        setting.DispCompleted = data.GetBooleanExtra("DispCompleted", true);
+                        setting.SortOrder = data.GetIntExtra("SortOrder", 0);
+                        items.SetFilter(setting.DispCompleted, setting.SortOrder);
+                        // アダプターを更新
+                        adapter.NotifyDataSetChanged();
+                    }
                     break;
                 default:
                     break;
@@ -116,7 +146,6 @@ namespace SampleTodo.Droid
 
     public class TodoAdapter : BaseAdapter<ToDo>
     {
-
         Activity _activity;
         ToDoFiltableCollection _items;
 

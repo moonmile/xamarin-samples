@@ -53,10 +53,6 @@ namespace SampleTodo.Droid.Models
             {
                 return this.DueDate == null ? DateTime.Now : DueDate.Value;
             }
-            set
-            {
-                this.DueDate = value;
-            }
         }
         public string StrDueDate
         {
