@@ -1,4 +1,4 @@
-﻿// WARNING
+// WARNING
 //
 // This file has been generated automatically by Xamarin Studio from the outlets and
 // actions declared in your storyboard file.
@@ -15,22 +15,58 @@ namespace SampleTodo.iOS
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UILabel label1 { get; set; }
+        UIKit.UISwitch swCompleted { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UITextField text1 { get; set; }
+        UIKit.UISwitch swDue { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel textCreateAt { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UITextField textDue { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UILabel textId { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UITextField textText { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
-            if (label1 != null) {
-                label1.Dispose ();
-                label1 = null;
+            if (swCompleted != null) {
+                swCompleted.Dispose ();
+                swCompleted = null;
             }
 
-            if (text1 != null) {
-                text1.Dispose ();
-                text1 = null;
+            if (swDue != null) {
+                swDue.Dispose ();
+                swDue = null;
+            }
+
+            if (textCreateAt != null) {
+                textCreateAt.Dispose ();
+                textCreateAt = null;
+            }
+
+            if (textDue != null) {
+                textDue.Dispose ();
+                textDue = null;
+            }
+
+            if (textId != null) {
+                textId.Dispose ();
+                textId = null;
+            }
+
+            if (textText != null) {
+                textText.Dispose ();
+                textText = null;
             }
         }
     }

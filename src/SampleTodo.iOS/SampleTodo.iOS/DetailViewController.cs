@@ -26,11 +26,13 @@ namespace SampleTodo.iOS
 
 		void ConfigureView()
 		{
+			/*
             if (label1 == null) return;
 
             // Update the user interface for the detail item
             label1.Text = this.DetailItem.Id.ToString();
             text1.Text = this.DetailItem.Text;
+			*/
 		}
 
 		public override void ViewDidLoad()

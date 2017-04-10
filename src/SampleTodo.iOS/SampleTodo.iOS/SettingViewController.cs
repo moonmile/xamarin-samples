@@ -27,8 +27,6 @@ namespace SampleTodo.iOS
         {
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
-            img1.Image = UIImage.FromFile("images/sample.png");
-
         }
 
         public override void ViewWillAppear(bool animated)
