@@ -36,7 +36,7 @@ namespace SampleTodo.iOS
         ToDoFiltableCollection items;
 
         // 設定
-        Setting setting = new Setting()
+        Setting appSetting = new Setting()
         {
             DispCompleted = true,
             SortOrder = 0,              // 作成日順
@@ -48,22 +48,39 @@ namespace SampleTodo.iOS
             // Release any cached data, images, etc that aren't in use.
         }
 
-        /// <summary>
-        /// セグエの実行時
-        /// </summary>
-        /// <param name="segue"></param>
-        /// <param name="sender"></param>
-        public override void PrepareForSegue(UIStoryboardSegue segue, NSObject sender)
-        {
-            /// 項目を選択したとき
-            if (segue.Identifier == "showDetail")
-            {
-                var indexPath = TableView.IndexPathForSelectedRow;
-                var item = items[indexPath.Row];
+		/// <summary>
+		/// セグエの実行時
+		/// </summary>
+		/// <param name="segue"></param>
+		/// <param name="sender"></param>
+		public override void PrepareForSegue(UIStoryboardSegue segue, NSObject sender)
+		{
+			/// 項目を選択したとき
+			if (segue.Identifier == "showDetail")
+			{
+				var indexPath = TableView.IndexPathForSelectedRow;
+				var item = items[indexPath.Row];
+				((DetailViewController)segue.DestinationViewController).SetDetailItem(item);
+			}
+			else if (segue.Identifier == "showDetailForAdd")
+			{
+				var item = new ToDo()
+				{
+					Id = items.Count + 1,
+					Text = "New ToDo",
+					DueDate = null,         // 期限なし
+					Completed = false,
+					CreatedAt = DateTime.Now
+				};
+				((DetailViewController)segue.DestinationViewController).SetDetailItem(item);
+			}
+		}
 
-                ((DetailViewController)segue.DestinationViewController).SetDetailItem(item);
-            }
-        }
+		[Action("UnwindToMasterView:")]
+		public void UnwindToMasterView(UIStoryboardSegue segue)
+		{
+			
+		}
 
         /// <summary>
         /// 新規ボタンをタップ
@@ -72,14 +89,6 @@ namespace SampleTodo.iOS
         /// <param name="args"></param>
         void AddNewItem(object sender, EventArgs args)
         {
-            var item = new ToDo()
-            {
-                Id = items.Count + 1,
-                Text = "New ToDo",
-                DueDate = null,         // 期限なし
-                Completed = false,
-                CreatedAt = DateTime.Now
-            };
 
             // ビューを更新
             using (var indexPath = NSIndexPath.FromRowSection(0, 0))
@@ -111,7 +120,7 @@ namespace SampleTodo.iOS
             public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
             {
                 var cell = tableView.DequeueReusableCell(CellIdentifier, indexPath);
-                cell.TextLabel.Text = items[indexPath.Row].ToString();
+				cell.TextLabel.Text = items[indexPath.Row].Text;
                 return cell;
             }
 
@@ -134,14 +143,6 @@ namespace SampleTodo.iOS
                     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
                 }
             }
-        }
-        /// <summary>
-        /// 追加ボタンをタップする
-        /// </summary>
-        /// <param name="sender"></param>
-        partial void UIBarButtonItem106_Activated(UIBarButtonItem sender)
-        {
-            AddNewItem(sender, null);
         }
     }
 }

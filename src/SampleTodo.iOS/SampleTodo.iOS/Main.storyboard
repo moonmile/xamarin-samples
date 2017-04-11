@@ -71,14 +71,14 @@
                     <toolbarItems>
                         <barButtonItem title="設定" id="219">
                             <connections>
-                                <segue destination="8" kind="show" id="288"/>
+                                <segue destination="8" kind="show" id="288" identifier="showSetting"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Master" id="tQt-TN-PWz">
                         <barButtonItem key="rightBarButtonItem" title="追加" id="106">
                             <connections>
-                                <segue id="401" destination="Ah7-4n-0Wa" kind="show"/>
+                                <segue id="401" destination="Ah7-4n-0Wa" kind="show" identifier="showDetailForAdd"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -172,7 +172,13 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Detail" id="cra-N8-TIN"/>
+                    <navigationItem key="navigationItem" title="Detail" id="cra-N8-TIN">
+                        <barButtonItem key="rightBarButtonItem" id="408" title="保存">
+                            <connections>
+                                <action selector="BtnSave_Activated:" destination="Ah7-4n-0Wa" id="415"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="textId" destination="303" id="name-outlet-303"/>
                         <outlet property="textText" destination="305" id="name-outlet-305"/>
@@ -180,6 +186,7 @@
                         <outlet property="textDue" destination="bm5-f8-T04" id="name-outlet-bm5-f8-T04"/>
                         <outlet property="swCompleted" destination="KoQ-bZ-E8m" id="name-outlet-KoQ-bZ-E8m"/>
                         <outlet property="textCreateAt" destination="RbO-nt-XIz" id="name-outlet-RbO-nt-XIz"/>
+                        <outlet property="btnSave" destination="408" id="name-outlet-408"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lrm-kH-fPn" sceneMemberID="firstResponder"/>
@@ -227,7 +234,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="UIButton323_TouchUpInside:" destination="8" id="324" eventType="touchUpInside"/>
+                                    <segue id="425" destination="421" kind="unwind" unwindAction="UnwindToMasterView:"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -237,9 +244,11 @@
                     <connections>
                         <outlet property="swDispCompleted" destination="315" id="name-outlet-315"/>
                         <outlet property="pkOrder" destination="316" id="name-outlet-316"/>
+                        <outlet property="btnBack" destination="323" id="name-outlet-323"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="10" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="421" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="599.2" y="858.6207"/>
         </scene>

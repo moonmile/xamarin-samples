@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleName</key>
-	<string>SampleTodo.iOS</string>
+	<string>SampleTodo</string>
 	<key>CFBundleIdentifier</key>
 	<string>com.companyname.sampletodo-ios</string>
 	<key>CFBundleShortVersionString</key>
@@ -34,7 +34,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>CFBundleDisplayName</key>
-	<string></string>
+	<string>SampleTodo</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array/>
 </dict>

@@ -15,18 +15,23 @@ namespace SampleTodo.iOS
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIButton btnBack { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UIPickerView pkOrder { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UISwitch swDispCompleted { get; set; }
 
-        [Action ("UIButton323_TouchUpInside:")]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        partial void UIButton323_TouchUpInside (UIKit.UIButton sender);
-
         void ReleaseDesignerOutlets ()
         {
+            if (btnBack != null) {
+                btnBack.Dispose ();
+                btnBack = null;
+            }
+
             if (pkOrder != null) {
                 pkOrder.Dispose ();
                 pkOrder = null;

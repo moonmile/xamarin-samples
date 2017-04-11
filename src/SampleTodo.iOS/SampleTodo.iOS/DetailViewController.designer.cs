@@ -15,6 +15,10 @@ namespace SampleTodo.iOS
     {
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UIBarButtonItem btnSave { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UISwitch swCompleted { get; set; }
 
         [Outlet]
@@ -37,8 +41,17 @@ namespace SampleTodo.iOS
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UITextField textText { get; set; }
 
+        [Action ("BtnSave_Activated:")]
+        [GeneratedCode ("iOS Designer", "1.0")]
+        partial void BtnSave_Activated (UIKit.UIBarButtonItem sender);
+
         void ReleaseDesignerOutlets ()
         {
+            if (btnSave != null) {
+                btnSave.Dispose ();
+                btnSave = null;
+            }
+
             if (swCompleted != null) {
                 swCompleted.Dispose ();
                 swCompleted = null;

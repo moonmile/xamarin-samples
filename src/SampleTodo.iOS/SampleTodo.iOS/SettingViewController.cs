@@ -7,49 +7,33 @@ using UIKit;
 
 namespace SampleTodo.iOS
 {
-    public partial class SettingViewController : UIViewController
-    {
-        public SettingViewController(IntPtr handle) : base(handle)
-        {
-        }
+	public partial class SettingViewController : UIViewController
+	{
 
-        public override void DidReceiveMemoryWarning()
-        {
-            // Releases the view if it doesn't have a superview.
-            base.DidReceiveMemoryWarning();
+		public SettingViewController(IntPtr handle) : base(handle)
+		{
+		}
 
-            // Release any cached data, images, etc that aren't in use.
-        }
+		public override void DidReceiveMemoryWarning()
+		{
+			// Releases the view if it doesn't have a superview.
+			base.DidReceiveMemoryWarning();
 
-        #region View lifecycle
+			// Release any cached data, images, etc that aren't in use.
+		}
 
-        public override void ViewDidLoad()
-        {
-            base.ViewDidLoad();
-            // Perform any additional setup after loading the view, typically from a nib.
+		/// <summary>
+		/// セグエの実行時
+		/// </summary>
+		/// <param name="segue"></param>
+		/// <param name="sender"></param>
+		public override void PrepareForSegue(UIStoryboardSegue segue, NSObject sender)
+		{
+			if (segue.Identifier == "")
+			{
+			}
 
-        }
 
-        public override void ViewWillAppear(bool animated)
-        {
-            base.ViewWillAppear(animated);
-        }
-
-        public override void ViewDidAppear(bool animated)
-        {
-            base.ViewDidAppear(animated);
-        }
-
-        public override void ViewWillDisappear(bool animated)
-        {
-            base.ViewWillDisappear(animated);
-        }
-
-        public override void ViewDidDisappear(bool animated)
-        {
-            base.ViewDidDisappear(animated);
-        }
-
-        #endregion
-    }
+		}
+	}
 }
