@@ -19,11 +19,11 @@ namespace SampleTodo.iOS
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIPickerView pkOrder { get; set; }
+        UIKit.UISwitch swDispCompleted { get; set; }
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UISwitch swDispCompleted { get; set; }
+        UIKit.UITextField textOrder { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
@@ -32,14 +32,14 @@ namespace SampleTodo.iOS
                 btnBack = null;
             }
 
-            if (pkOrder != null) {
-                pkOrder.Dispose ();
-                pkOrder = null;
-            }
-
             if (swDispCompleted != null) {
                 swDispCompleted.Dispose ();
                 swDispCompleted = null;
+            }
+
+            if (textOrder != null) {
+                textOrder.Dispose ();
+                textOrder = null;
             }
         }
     }

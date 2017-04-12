@@ -27,6 +27,10 @@ namespace SampleTodo.iOS
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
+        UIKit.UITapGestureRecognizer tapGesture { get; set; }
+
+        [Outlet]
+        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel textCreateAt { get; set; }
 
         [Outlet]
@@ -40,10 +44,6 @@ namespace SampleTodo.iOS
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UITextField textText { get; set; }
-
-        [Action ("BtnSave_Activated:")]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        partial void BtnSave_Activated (UIKit.UIBarButtonItem sender);
 
         void ReleaseDesignerOutlets ()
         {
@@ -60,6 +60,11 @@ namespace SampleTodo.iOS
             if (swDue != null) {
                 swDue.Dispose ();
                 swDue = null;
+            }
+
+            if (tapGesture != null) {
+                tapGesture.Dispose ();
+                tapGesture = null;
             }
 
             if (textCreateAt != null) {
