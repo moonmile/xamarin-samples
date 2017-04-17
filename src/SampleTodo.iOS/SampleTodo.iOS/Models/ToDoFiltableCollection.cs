@@ -36,6 +36,12 @@ namespace SampleTodo.iOS.Models
             this.Remove(item);
             return b;
         }
+        public new void RemoveAt( int index )
+        {
+            var item = this[index];
+            this.Remove(item);
+        }
+
         public new void Insert(int index, ToDo item)
         {
             _items.Insert(index, item);
