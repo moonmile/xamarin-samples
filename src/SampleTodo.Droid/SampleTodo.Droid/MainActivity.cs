@@ -18,15 +18,18 @@ namespace SampleTodo.Droid
             base.OnCreate(bundle);
 
             // Set our view from the "main" layout resource
-            SetContentView (Resource.Layout.Main);
+            SetContentView(Resource.Layout.Main);
 
+            // 内部ストレージから読み込み
+            items = new ToDoFiltableCollection();
+            this.Load();
+            /*
             var lst = new List<ToDo>();
             lst.Add(new ToDo() { Id = 1, Text = "item no.1", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
             lst.Add(new ToDo() { Id = 2, Text = "item no.2", DueDate = new DateTime(2017, 5, 3), CreatedAt = new DateTime(2017, 3, 2) });
             lst.Add(new ToDo() { Id = 3, Text = "item no.3", DueDate = new DateTime(2017, 5, 2), CreatedAt = new DateTime(2017, 3, 3) });
-            lst.Add(new ToDo() { Id = 4, Text = "item no.4", DueDate = null, CreatedAt = new DateTime(2017, 3, 4) });
             items = new ToDoFiltableCollection(lst);
-
+            */
             listview = FindViewById<ListView>(Resource.Id.tableview);
             listview.Adapter = adapter = new TodoAdapter(this, items);
             listview.ItemClick += Listview_ItemClick;
@@ -64,7 +67,7 @@ namespace SampleTodo.Droid
             // データをシリアライズして渡す
             var data = Newtonsoft.Json.JsonConvert.SerializeObject(item);
             intent.PutExtra("data", data);
-            StartActivityForResult(intent,1);
+            StartActivityForResult(intent, 1);
         }
         /// <summary>
         /// 新規ボタンをタップ
@@ -106,7 +109,7 @@ namespace SampleTodo.Droid
             switch (requestCode)
             {
                 case 1: // 項目を選択時
-                    if ( resultCode == Result.Ok )
+                    if (resultCode == Result.Ok)
                     {
                         var v = data.GetStringExtra("data");
                         var item = Newtonsoft.Json.JsonConvert.DeserializeObject<ToDo>(v);
@@ -114,6 +117,8 @@ namespace SampleTodo.Droid
                         items.Update(item.Id, item);
                         // アダプターを更新
                         adapter.NotifyDataSetChanged();
+                        // 内部ストレージに保存
+                        this.Save();
                     }
                     break;
                 case 2: // 新規作成時
@@ -125,10 +130,11 @@ namespace SampleTodo.Droid
                         items.Add(item);
                         // アダプターを更新
                         adapter.NotifyDataSetChanged();
+                        this.Save();
                     }
                     break;
                 case 3: // 設定画面からの戻り
-                    if ( resultCode == Result.Ok )
+                    if (resultCode == Result.Ok)
                     {
                         setting.DispCompleted = data.GetBooleanExtra("DispCompleted", true);
                         setting.SortOrder = data.GetIntExtra("SortOrder", 0);
@@ -140,9 +146,58 @@ namespace SampleTodo.Droid
                 default:
                     break;
             }
-        }
 
+        }
+        /// <summary>
+        /// 内部ストレージに保存
+        /// </summary>
+        void Save()
+        {
+            var docs = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+            var file = System.IO.Path.Combine(docs, "save.xml");
+            using (var st = System.IO.File.OpenWrite(file))
+            {
+                items.Save(st);
+            }
+        }
+        /// <summary>
+        /// 内部ストレージから読み込み
+        /// </summary>
+        void Load()
+        {
+            var docs = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+            var file = System.IO.Path.Combine(docs, "save.xml");
+            if ( System.IO.File.Exists( file ))
+            {
+                using (var st = System.IO.File.OpenRead(file))
+                {
+                    if ( items == null )
+                    {
+                        items = new ToDoFiltableCollection();
+                    }
+                    if ( items.Load(st) == false )
+                    {
+                        // 失敗時には、初期データを作成する
+                        System.IO.File.Delete(file);
+                        // 初期データを作成する
+                        var lst = new List<ToDo>();
+                        lst.Add(new ToDo() { Id = 1, Text = "sample todo", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
+                        items = new ToDoFiltableCollection(lst);
+                    }
+                }
+            }
+            else
+            {
+                // 初期データを作成する
+                var lst = new List<ToDo>();
+                lst.Add(new ToDo() { Id = 1, Text = "sample no.1", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
+                lst.Add(new ToDo() { Id = 2, Text = "sample no.2", DueDate = new DateTime(2017, 5, 3), CreatedAt = new DateTime(2017, 3, 2) });
+                lst.Add(new ToDo() { Id = 3, Text = "sample no.3", DueDate = new DateTime(2017, 5, 2), CreatedAt = new DateTime(2017, 3, 3) });
+                items = new ToDoFiltableCollection(lst);
+            }
+        }
     }
+
 
     public class TodoAdapter : BaseAdapter<ToDo>
     {

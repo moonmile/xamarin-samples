@@ -93,5 +93,48 @@ namespace SampleTodo.iOS.Models
             this.Clear();
             lst.All(x => { base.Add(x); return true; });
         }
+
+        /// <summary>
+        /// ストリームへXML形式で保存する
+        /// </summary>
+        /// <param name="st"></param>
+        /// <returns></returns>
+        public bool Save(System.IO.Stream st)
+        {
+            try
+            {
+                st.SetLength(0);
+                var xs = new System.Xml.Serialization.XmlSerializer(typeof(ToDoFiltableCollection));
+                xs.Serialize(st, this);
+            }
+            catch (Exception ex)
+            {
+                // 保存に失敗した時
+                return false;
+            }
+            return true;
+        }
+        /// <summary>
+        /// ストリームからXML形式で復元する
+        /// </summary>
+        /// <param name="st"></param>
+        /// <returns></returns>
+        public bool Load(System.IO.Stream st)
+        {
+            try
+            {
+                var xs = new System.Xml.Serialization.XmlSerializer(typeof(ToDoFiltableCollection));
+                var newItems = xs.Deserialize(st) as ToDoFiltableCollection;
+                // データを更新する
+                this._items = newItems._items;
+                this.UpdateFilter();
+            }
+            catch (Exception ex)
+            {
+                // 読み込みに失敗した時
+                return false;
+            }
+            return true;
+        }
     }
 }

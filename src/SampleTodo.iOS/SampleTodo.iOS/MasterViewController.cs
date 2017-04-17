@@ -20,15 +20,17 @@ namespace SampleTodo.iOS
             base.ViewDidLoad();
 
             // Perform any additional setup after loading the view, typically from a nib.
-            // NavigationItem.LeftBarButtonItem = EditButtonItem;
-
+            // 内部ストレージから読み込み
+            items = new ToDoFiltableCollection();
+            this.Load();
+            /*
             var lst = new List<ToDo>();
             lst.Add(new ToDo() { Id = 1, Text = "item no.1", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
             lst.Add(new ToDo() { Id = 2, Text = "item no.2", DueDate = new DateTime(2017, 5, 3), CreatedAt = new DateTime(2017, 3, 2) });
             lst.Add(new ToDo() { Id = 3, Text = "item no.3", DueDate = new DateTime(2017, 5, 2), CreatedAt = new DateTime(2017, 3, 3) });
             // lst.Add(new ToDo() { Id = 4, Text = "item no.4", DueDate = null, CreatedAt = new DateTime(2017, 3, 4) });
             items = new ToDoFiltableCollection(lst);
-
+            */
             TableView.Source = new DataSource(this, items);
         }
 
@@ -113,15 +115,68 @@ namespace SampleTodo.iOS
 				// 新規作成の場合
 				item.Id = items.Count + 1;
 				items.Add(item);
-			}
-			else
+            }
+            else
 			{
 				// 更新の場合
 				items.Update(item.Id, item);
-			}
-			// ビューを更新する
-			TableView.ReloadData();
-		}
+            }
+            // ビューを更新する
+            TableView.ReloadData();
+            // 内部ストレージに保存
+            this.Save();
+        }
+
+
+        /// <summary>
+        /// 内部ストレージに保存
+        /// </summary>
+        void Save()
+        {
+            var docs = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+            var file = System.IO.Path.Combine(docs, "save.xml");
+            using (var st = System.IO.File.OpenWrite(file))
+            {
+                items.Save(st);
+            }
+        }
+        /// <summary>
+        /// 内部ストレージから読み込み
+        /// </summary>
+        void Load()
+        {
+            var docs = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+            var file = System.IO.Path.Combine(docs, "save.xml");
+            if (System.IO.File.Exists(file))
+            {
+                using (var st = System.IO.File.OpenRead(file))
+                {
+                    if (items == null)
+                    {
+                        items = new ToDoFiltableCollection();
+                    }
+                    if (items.Load(st) == false)
+                    {
+                        // 失敗時には、初期データを作成する
+                        System.IO.File.Delete(file);
+                        // 初期データを作成する
+                        var lst = new List<ToDo>();
+                        lst.Add(new ToDo() { Id = 1, Text = "sample todo", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
+                        items = new ToDoFiltableCollection(lst);
+                    }
+                }
+            }
+            else
+            {
+                // 初期データを作成する
+                var lst = new List<ToDo>();
+                lst.Add(new ToDo() { Id = 1, Text = "sample no.1", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
+                lst.Add(new ToDo() { Id = 2, Text = "sample no.2", DueDate = new DateTime(2017, 5, 3), CreatedAt = new DateTime(2017, 3, 2) });
+                lst.Add(new ToDo() { Id = 3, Text = "sample no.3", DueDate = new DateTime(2017, 5, 2), CreatedAt = new DateTime(2017, 3, 3) });
+                items = new ToDoFiltableCollection(lst);
+            }
+        }
+
 
         class DataSource : UITableViewSource
         {

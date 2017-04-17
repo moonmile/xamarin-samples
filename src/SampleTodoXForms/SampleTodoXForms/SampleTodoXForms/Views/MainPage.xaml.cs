@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using System.IO;
 
 namespace SampleTodoXForms.Views
 {
@@ -19,16 +20,20 @@ namespace SampleTodoXForms.Views
         {
             InitializeComponent();
             // items = new ObservableCollection<ToDo>(); // 単純なMVVMパターンの場合
+
+            // 内部ストレージから読み込み
+            items = new ToDoFiltableCollection();
+            this.Load();
+            /*
             // 最初のアイテムを追加
             var lst = new List<ToDo>();
             lst.Add(new ToDo() { Id = 1, Text = "item no.1", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
             lst.Add(new ToDo() { Id = 2, Text = "item no.2", DueDate = new DateTime(2017, 5, 3), CreatedAt = new DateTime(2017, 3, 2) });
             lst.Add(new ToDo() { Id = 3, Text = "item no.3", DueDate = new DateTime(2017, 5, 2), CreatedAt = new DateTime(2017, 3, 3) });
-
+            */
             viewModel = new MainViewModel();
-            viewModel.Items = items = new ToDoFiltableCollection(lst);
+            viewModel.Items = items; // = new ToDoFiltableCollection(lst);
             this.BindingContext = viewModel;
-
         }
 
 
@@ -54,7 +59,13 @@ namespace SampleTodoXForms.Views
             var item = args.SelectedItem as ToDo;
             if (item == null)
                 return;
-            await Navigation.PushAsync(new DetailPage(item, () => items.UpdateFilter()));
+            await Navigation.PushAsync(
+                new DetailPage(item, 
+                () => {
+                    items.UpdateFilter();
+                    // 内部ストレージに保存
+                    this.Save();
+                }));
             listView.SelectedItem = null;
 
         }
@@ -66,15 +77,19 @@ namespace SampleTodoXForms.Views
         /// <param name="e"></param>
         async void AddItem_Clicked(object sender, EventArgs e)
         {
-            var item = new ToDo() {
+            var item = new ToDo()
+            {
                 Id = items.Count + 1,
                 Text = "New ToDo",
                 DueDate = null,         // 期限なし
                 Completed = false,
                 CreatedAt = DateTime.Now
             };
-            await Navigation.PushAsync(new DetailPage(item, ()=> {
+            await Navigation.PushAsync(new DetailPage(item, () =>
+            {
                 items.Add(item);
+                // 内部ストレージに保存
+                this.Save();
             }));
         }
 
@@ -90,5 +105,50 @@ namespace SampleTodoXForms.Views
                 items.SetFilter(setting.DispCompleted, setting.SortOrder);
             }));
         }
+
+        IToDoStorage storage = DependencyService.Get<IToDoStorage>();
+
+        /// <summary>
+        /// 内部ストレージに保存
+        /// </summary>
+        void Save()
+        {
+            using (var st = storage.OpenWriter("save.xml"))
+            {
+                items.Save(st);
+            }
+        }
+        /// <summary>
+        /// 内部ストレージから読み込み
+        /// </summary>
+        void Load()
+        {
+            if (items == null)
+            {
+                items = new ToDoFiltableCollection();
+            }
+            using (var st = storage.OpenReader("save.xml"))
+            {
+                if (st == null || items.Load(st) == false)
+                {
+                    // 初期データを作成する
+                    var lst = new List<ToDo>();
+                    lst.Add(new ToDo() { Id = 1, Text = "sample no.1", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
+                    lst.Add(new ToDo() { Id = 2, Text = "sample no.2", DueDate = new DateTime(2017, 5, 3), CreatedAt = new DateTime(2017, 3, 2) });
+                    lst.Add(new ToDo() { Id = 3, Text = "sample no.3", DueDate = new DateTime(2017, 5, 2), CreatedAt = new DateTime(2017, 3, 3) });
+                    items = new ToDoFiltableCollection(lst);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// ストレージ用のインターフェース
+    /// </summary>
+    public interface IToDoStorage
+    {
+        System.IO.Stream OpenReader(string file);
+        System.IO.Stream OpenWriter(string file);
     }
 }
+

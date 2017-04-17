@@ -28,8 +28,8 @@ namespace SampleTodoXForms.Models
             get { return dueDate; }
             set {
                 SetProperty(ref dueDate, value);
-                this.OnPropertyChanged("DispDueDate");
-                this.OnPropertyChanged("StrDueDate");
+                this.OnPropertyChanged(nameof(DispDueDate));
+                this.OnPropertyChanged(nameof(StrDueDate));
             }
         }
         public bool UseDueDate
@@ -44,10 +44,6 @@ namespace SampleTodoXForms.Models
             get
             {
                 return this.DueDate == null ? DateTime.Now : DueDate.Value;
-            }
-            set
-            {
-                this.DueDate = value;
             }
         }
         public string StrDueDate
