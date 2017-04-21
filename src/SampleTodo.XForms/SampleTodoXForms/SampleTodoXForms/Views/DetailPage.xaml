@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SampleTodoXForms.Views.DetailPage"
+             Title="{Binding Title}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Save" Clicked="Save_Clicked" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <StackLayout Spacing="20" Padding="15">
+            <Label Text="ID" FontSize="Medium" />
+            <Label Text="{Binding Id}" FontSize="Small" />
+            
+            <Label Text="項目名" FontSize="Medium" />
+            <Entry Text="{Binding Text}" FontSize="Small" />
+            
+            <Label Text="期日" FontSize="Medium" />
+            <Switch x:Name="swDue" IsToggled="{Binding UseDueDate}" Toggled="Switch_Toggled" />
+            <DatePicker x:Name="dpDue" Date="{Binding DispDueDate}" IsVisible="{Binding UseDueDate}" Format="yyyy-MM-dd" />
+
+            <Label Text="完了" FontSize="Medium" />
+            <Switch IsToggled="{Binding Completed}" />
+
+            <Label Text="作成日" FontSize="Medium" />
+            <Label Text="{Binding CreatedAt, StringFormat='{0:yyyy-MM-dd hh:mm}'}" FontSize="Small"/>
+        
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>    

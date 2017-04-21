@@ -7,29 +7,35 @@ using Android.Content;
 using System;
 using SampleTodo.Droid.Models;
 using Android.Runtime;
+using Microsoft.WindowsAzure.MobileServices;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace SampleTodo.Droid
 {
     [Activity(Label = "SampleTodo.Droid", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
-        protected override void OnCreate(Bundle bundle)
+        // Azure Mobile Service に接続する
+        private MobileServiceClient client;
+        private IMobileServiceTable<ToDo> todoTable;
+        // URL of the mobile app backend.
+        const string applicationURL = @"https://sampletodomobileapp.azurewebsites.net";
+
+
+        protected async override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            // 内部ストレージから読み込み
-            items = new ToDoFiltableCollection();
-            this.Load();
-            /*
-            var lst = new List<ToDo>();
-            lst.Add(new ToDo() { Id = 1, Text = "item no.1", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
-            lst.Add(new ToDo() { Id = 2, Text = "item no.2", DueDate = new DateTime(2017, 5, 3), CreatedAt = new DateTime(2017, 3, 2) });
-            lst.Add(new ToDo() { Id = 3, Text = "item no.3", DueDate = new DateTime(2017, 5, 2), CreatedAt = new DateTime(2017, 3, 3) });
-            items = new ToDoFiltableCollection(lst);
-            */
+            // Azure Mobile Service を使う
+            client = new MobileServiceClient(applicationURL);
+            // ToDo テーブルを更新対象にする
+            todoTable = client.GetTable<ToDo>();
+            items = new List<ToDo>();
+
             listview = FindViewById<ListView>(Resource.Id.tableview);
             listview.Adapter = adapter = new TodoAdapter(this, items);
             listview.ItemClick += Listview_ItemClick;
@@ -39,10 +45,57 @@ namespace SampleTodo.Droid
 
             btnNew.Click += BtnNew_Click;
             btnSetting.Click += BtnSetting_Click;
+
+            await RefreshItemsFromTableAsync();
+        }
+
+        /// <summary>
+        /// Azure Mobile Service に接続して ToDo データを取得する
+        /// </summary>
+        /// <returns></returns>
+        private async Task RefreshItemsFromTableAsync()
+        {
+            try
+            {
+                List<ToDo> list;
+                if ( setting.DispCompleted == true )
+                {
+                    list = await todoTable.ToListAsync();
+                }
+                else
+                {
+                    // 未完了の項目のみ取得する
+                    list = await todoTable.Where(x => x.Completed == false).ToListAsync();
+                }
+                // 表示順を変える
+                switch (setting.SortOrder)
+                {
+                    case 0: // 作成日順/ID順
+                        list = list.OrderByDescending(x => x.CreatedAt).ToList();
+                        break;
+                    case 1: // 項目名順
+                        list = list.OrderBy(x => x.Text).ToList();
+                        break;
+                    case 2: // 期日順
+                        list = list.OrderBy(x => x.DueDate).ToList();
+                        break;
+                }
+
+                this.items.Clear();
+                foreach ( var it in list )
+                {
+                    items.Add(it);
+                }
+                adapter.NotifyDataSetChanged();
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         // 表示するデータ
-        ToDoFiltableCollection items;
+        List<ToDo> items;
 
         // 設定
         Setting setting = new Setting()
@@ -78,7 +131,7 @@ namespace SampleTodo.Droid
         {
             var item = new ToDo()
             {
-                Id = items.Count + 1,
+                Id = "",
                 Text = "New ToDo",
                 DueDate = null,         // 期限なし
                 Completed = false,
@@ -103,7 +156,7 @@ namespace SampleTodo.Droid
             StartActivityForResult(intent, 3);
         }
 
-        protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        protected async override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
             switch (requestCode)
@@ -114,11 +167,9 @@ namespace SampleTodo.Droid
                         var v = data.GetStringExtra("data");
                         var item = Newtonsoft.Json.JsonConvert.DeserializeObject<ToDo>(v);
                         // データを更新する
-                        items.Update(item.Id, item);
+                        await todoTable.UpdateAsync(item);
                         // アダプターを更新
-                        adapter.NotifyDataSetChanged();
-                        // 内部ストレージに保存
-                        this.Save();
+                        await RefreshItemsFromTableAsync();
                     }
                     break;
                 case 2: // 新規作成時
@@ -127,11 +178,9 @@ namespace SampleTodo.Droid
                         var v = data.GetStringExtra("data");
                         var item = Newtonsoft.Json.JsonConvert.DeserializeObject<ToDo>(v);
                         // データを更新する
-                        items.Add(item);
+                        await todoTable.InsertAsync(item);
                         // アダプターを更新
-                        adapter.NotifyDataSetChanged();
-                        // 内部ストレージに保存
-                        this.Save();
+                        await RefreshItemsFromTableAsync();
                     }
                     break;
                 case 3: // 設定画面からの戻り
@@ -139,9 +188,9 @@ namespace SampleTodo.Droid
                     {
                         setting.DispCompleted = data.GetBooleanExtra("DispCompleted", true);
                         setting.SortOrder = data.GetIntExtra("SortOrder", 0);
-                        items.SetFilter(setting.DispCompleted, setting.SortOrder);
+                        // items.SetFilter(setting.DispCompleted, setting.SortOrder);
                         // アダプターを更新
-                        adapter.NotifyDataSetChanged();
+                        await RefreshItemsFromTableAsync();
                     }
                     break;
                 default:
@@ -149,63 +198,15 @@ namespace SampleTodo.Droid
             }
 
         }
-        /// <summary>
-        /// 内部ストレージに保存
-        /// </summary>
-        void Save()
-        {
-            var docs = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
-            var file = System.IO.Path.Combine(docs, "save.xml");
-            using (var st = System.IO.File.OpenWrite(file))
-            {
-                items.Save(st);
-            }
-        }
-        /// <summary>
-        /// 内部ストレージから読み込み
-        /// </summary>
-        void Load()
-        {
-            var docs = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
-            var file = System.IO.Path.Combine(docs, "save.xml");
-            if ( System.IO.File.Exists( file ))
-            {
-                using (var st = System.IO.File.OpenRead(file))
-                {
-                    if ( items == null )
-                    {
-                        items = new ToDoFiltableCollection();
-                    }
-                    if ( items.Load(st) == false )
-                    {
-                        // 失敗時には、初期データを作成する
-                        System.IO.File.Delete(file);
-                        // 初期データを作成する
-                        var lst = new List<ToDo>();
-                        lst.Add(new ToDo() { Id = 1, Text = "sample todo", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
-                        items = new ToDoFiltableCollection(lst);
-                    }
-                }
-            }
-            else
-            {
-                // 初期データを作成する
-                var lst = new List<ToDo>();
-                lst.Add(new ToDo() { Id = 1, Text = "sample no.1", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
-                lst.Add(new ToDo() { Id = 2, Text = "sample no.2", DueDate = new DateTime(2017, 5, 3), CreatedAt = new DateTime(2017, 3, 2) });
-                lst.Add(new ToDo() { Id = 3, Text = "sample no.3", DueDate = new DateTime(2017, 5, 2), CreatedAt = new DateTime(2017, 3, 3) });
-                items = new ToDoFiltableCollection(lst);
-            }
-        }
     }
 
 
     public class TodoAdapter : BaseAdapter<ToDo>
     {
         Activity _activity;
-        ToDoFiltableCollection _items;
+        List<ToDo> _items;
 
-        public TodoAdapter(Activity act, ToDoFiltableCollection items)
+        public TodoAdapter(Activity act, List<ToDo> items)
         {
             _activity = act;
             _items = items;
@@ -229,7 +230,7 @@ namespace SampleTodo.Droid
 
         public override long GetItemId(int position)
         {
-            return _items[position].Id;
+            return position; 
         }
 
         public override View GetView(int position, View convertView, ViewGroup parent)
