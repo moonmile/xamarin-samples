@@ -39,6 +39,33 @@ namespace SampleTodoXForms.Views
             this.BindingContext = viewModel;
 
             RefreshItemsFromTableAsync();
+
+            // メッセージの受信の設定
+            receiveMessage();
+        }
+
+        /// <summary>
+        /// MessagingCenter を利用して、画面間のデータをやり取りする
+        /// </summary>
+        private void receiveMessage()
+        {
+            MessagingCenter.Subscribe<DetailPage, ToDo>(this, "UpdateItem", async (page, item) => {
+                // データを更新する
+                await todoTable.UpdateAsync(item);
+                // 表示を更新する
+                await RefreshItemsFromTableAsync();
+            });
+            MessagingCenter.Subscribe<DetailPage, ToDo>(this, "AddItem", async (page, item) => {
+                item.Id = Guid.NewGuid().ToString();
+                // データを更新する
+                await todoTable.InsertAsync(item);
+                // 表示を更新する
+                await RefreshItemsFromTableAsync();
+            });
+            MessagingCenter.Subscribe<SettingPage>(this, "UpdateSetting", async (page) => {
+                // 表示を更新する
+                await RefreshItemsFromTableAsync();
+            });
         }
 
         /// <summary>
@@ -105,15 +132,7 @@ namespace SampleTodoXForms.Views
             var item = args.SelectedItem as ToDo;
             if (item == null)
                 return;
-            await Navigation.PushAsync(
-                new DetailPage(item,
-                async () =>
-                {
-                    // データを更新する
-                    await todoTable.UpdateAsync(item);
-                    // 表示を更新する
-                    await RefreshItemsFromTableAsync();
-                }));
+            await Navigation.PushAsync(new DetailPage(item));
             listView.SelectedItem = null;
 
         }
@@ -127,19 +146,13 @@ namespace SampleTodoXForms.Views
         {
             var item = new ToDo()
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = "",
                 Text = "New ToDo",
                 DueDate = null,         // 期限なし
                 Completed = false,
                 CreatedAt = DateTime.Now
             };
-            await Navigation.PushAsync(new DetailPage(item, async () =>
-            {
-                // データを更新する
-                await todoTable.InsertAsync(item);
-                // 表示を更新する
-                await RefreshItemsFromTableAsync();
-            }));
+            await Navigation.PushAsync(new DetailPage(item));
         }
 
         /// <summary>
@@ -149,11 +162,7 @@ namespace SampleTodoXForms.Views
         /// <param name="e"></param>
         async void Setting_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new SettingPage(setting, async () =>
-            {
-                // 表示を更新する
-                await RefreshItemsFromTableAsync();
-            }));
+            await Navigation.PushAsync(new SettingPage(setting));
         }
 
 #if NOT_USE_AZURE

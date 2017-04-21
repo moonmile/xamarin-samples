@@ -17,7 +17,7 @@ namespace SampleTodoXForms.Views
         {
             InitializeComponent();
         }
-        public SettingPage(Setting item, Action callback = null )
+        public SettingPage(Setting item )
         {
             InitializeComponent();
             this.BindingContext = _item = item;
@@ -26,12 +26,8 @@ namespace SampleTodoXForms.Views
             pickOrder.Items.Add("項目名順");
             pickOrder.Items.Add("期日順");
             pickOrder.SelectedIndex = _item.SortOrder;
-            // コールバックを設定
-            _callback = callback;
-
         }
         Setting _item;
-        Action _callback;
 
         /// <summary>
         /// 前の画面に戻る
@@ -41,11 +37,7 @@ namespace SampleTodoXForms.Views
         private void Back_Clicked(object sender, EventArgs e)
         {
             Navigation.PopAsync();
-            if ( _callback != null )
-            {
-                // コールバックの呼び出し
-                _callback();
-            }
+            MessagingCenter.Send(this, "UpdateSetting");
         }
         /// <summary>
         /// 戻るボタンをタップ
@@ -54,11 +46,7 @@ namespace SampleTodoXForms.Views
         protected override bool OnBackButtonPressed()
         {
             // 戻るボタンでも反映する
-            if (_callback != null)
-            {
-                // コールバックの呼び出し
-                _callback();
-            }
+            MessagingCenter.Send(this, "UpdateSetting");
             return base.OnBackButtonPressed();
         }
         /// <summary>

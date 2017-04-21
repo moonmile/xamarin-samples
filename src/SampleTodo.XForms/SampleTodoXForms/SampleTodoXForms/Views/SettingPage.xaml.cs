@@ -41,11 +41,14 @@ namespace SampleTodoXForms.Views
         private void Back_Clicked(object sender, EventArgs e)
         {
             Navigation.PopAsync();
+            /*
             if ( _callback != null )
             {
                 // コールバックの呼び出し
                 _callback();
             }
+            */
+            MessagingCenter.Send(this, "UpdateSetting");
         }
         /// <summary>
         /// 戻るボタンをタップ
@@ -54,11 +57,14 @@ namespace SampleTodoXForms.Views
         protected override bool OnBackButtonPressed()
         {
             // 戻るボタンでも反映する
+            /*
             if (_callback != null)
             {
                 // コールバックの呼び出し
                 _callback();
             }
+            */
+            MessagingCenter.Send(this, "UpdateSetting");
             return base.OnBackButtonPressed();
         }
         /// <summary>

@@ -22,24 +22,46 @@ namespace SampleTodoXForms.Views
             // items = new ObservableCollection<ToDo>(); // 単純なMVVMパターンの場合
 
             // 内部ストレージから読み込み
-            items = new ToDoFiltableCollection();
-            this.Load();
+            viewModel = new MainViewModel();
             /*
             // 最初のアイテムを追加
             var lst = new List<ToDo>();
             lst.Add(new ToDo() { Id = 1, Text = "item no.1", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
             lst.Add(new ToDo() { Id = 2, Text = "item no.2", DueDate = new DateTime(2017, 5, 3), CreatedAt = new DateTime(2017, 3, 2) });
             lst.Add(new ToDo() { Id = 3, Text = "item no.3", DueDate = new DateTime(2017, 5, 2), CreatedAt = new DateTime(2017, 3, 3) });
+            viewModel.Items = new ToDoFiltableCollection(lst);            
             */
-            viewModel = new MainViewModel();
-            viewModel.Items = items; // = new ToDoFiltableCollection(lst);
+            viewModel.Items = new ToDoFiltableCollection();
+            this.Load();
             this.BindingContext = viewModel;
+
+            // メッセージの受信の設定
+            receiveMessage();
+        }
+
+        /// <summary>
+        /// MessagingCenter を利用して、画面間のデータをやり取りする
+        /// </summary>
+        private void receiveMessage()
+        {
+            MessagingCenter.Subscribe<DetailPage, ToDo>(this, "UpdateItem", (page, item) => {
+                viewModel.Items.UpdateFilter();
+                // 内部ストレージに保存
+                this.Save();
+            });
+            MessagingCenter.Subscribe<DetailPage, ToDo>(this, "AddItem", (page, item) => {
+                item.Id = viewModel.Items.Count + 1;
+                viewModel.Items.Add(item);
+                // 内部ストレージに保存
+                this.Save();
+            });
+            MessagingCenter.Subscribe<SettingPage>(this, "UpdateSetting", (page) => {
+                viewModel.Items.SetFilter(setting.DispCompleted, setting.SortOrder);
+            });
         }
 
 
         // 表示するデータ
-        // ObservableCollection<ToDo> items;
-        ToDoFiltableCollection items;
         MainViewModel viewModel;
 
         // 設定
@@ -59,13 +81,16 @@ namespace SampleTodoXForms.Views
             var item = args.SelectedItem as ToDo;
             if (item == null)
                 return;
+            /*
             await Navigation.PushAsync(
                 new DetailPage(item, 
                 () => {
-                    items.UpdateFilter();
+                    viewModel.Items.UpdateFilter();
                     // 内部ストレージに保存
                     this.Save();
                 }));
+            */
+            await Navigation.PushAsync(new DetailPage(item));
             listView.SelectedItem = null;
 
         }
@@ -79,18 +104,21 @@ namespace SampleTodoXForms.Views
         {
             var item = new ToDo()
             {
-                Id = items.Count + 1,
+                Id = 0,
                 Text = "New ToDo",
                 DueDate = null,         // 期限なし
                 Completed = false,
                 CreatedAt = DateTime.Now
             };
+            /*
             await Navigation.PushAsync(new DetailPage(item, () =>
             {
-                items.Add(item);
+                viewModel.Items.Add(item);
                 // 内部ストレージに保存
                 this.Save();
             }));
+            */
+            await Navigation.PushAsync(new DetailPage(item));
         }
 
         /// <summary>
@@ -100,10 +128,15 @@ namespace SampleTodoXForms.Views
         /// <param name="e"></param>
         async void Setting_Clicked(object sender, EventArgs e)
         {
+            /*
             await Navigation.PushAsync(new SettingPage(setting, () =>
             {
-                items.SetFilter(setting.DispCompleted, setting.SortOrder);
+                viewModel.Items.SetFilter(setting.DispCompleted, setting.SortOrder);
             }));
+            */
+            await Navigation.PushAsync(new SettingPage(setting));
+
+
         }
 
         IToDoStorage storage = DependencyService.Get<IToDoStorage>();
@@ -115,7 +148,7 @@ namespace SampleTodoXForms.Views
         {
             using (var st = storage.OpenWriter("save.xml"))
             {
-                items.Save(st);
+                viewModel.Items.Save(st);
             }
         }
         /// <summary>
@@ -123,6 +156,7 @@ namespace SampleTodoXForms.Views
         /// </summary>
         void Load()
         {
+            var items = viewModel.Items;
             if (items == null)
             {
                 items = new ToDoFiltableCollection();

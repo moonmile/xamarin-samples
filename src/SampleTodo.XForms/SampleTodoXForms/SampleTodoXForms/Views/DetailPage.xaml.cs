@@ -33,10 +33,10 @@ namespace SampleTodoXForms.Views
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void Save_Clicked(object sender, EventArgs e)
+        async void Save_Clicked(object sender, EventArgs e)
         {
             // 元に戻る
-            this.Navigation.PopAsync();
+            await this.Navigation.PopAsync();
             // 変更結果を保存する
             if (swDue.IsToggled == true )
             {
@@ -45,11 +45,25 @@ namespace SampleTodoXForms.Views
             {
                 _item.DueDate = null;
             }
-            _item.Copy(_item_org);
+            // _item.Copy(_item_org);
+            /*
             // 保存時のコールバックを呼び出し
             if ( this._saved != null )
             {
                 this._saved();
+            }
+            */
+            if ( _item.Id == 0 )
+            {
+                // 項目を追加
+                MessagingCenter.Send(this, "AddItem", _item);
+            }
+            else
+            {
+                // メイン画面から渡されたデータを更新する
+                _item.Copy(_item_org);
+                // 既存項目の更新
+                MessagingCenter.Send(this, "UpdateItem", _item_org);
             }
         }
         /// <summary>

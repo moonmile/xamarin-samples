@@ -17,26 +17,24 @@ namespace SampleTodoXForms.Views
         {
             InitializeComponent();
         }
-        public DetailPage(ToDo item, Action saved = null )
+        public DetailPage(ToDo item )
         {
             InitializeComponent();
             this.BindingContext = _item = item.Copy();
-            this._saved = saved;
             this._item_org = item;
         }
 
         ToDo _item, _item_org;
-        Action _saved;
 
         /// <summary>
         /// 保存ボタンをタップ
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void Save_Clicked(object sender, EventArgs e)
+        async void Save_Clicked(object sender, EventArgs e)
         {
             // 元に戻る
-            this.Navigation.PopAsync();
+            await this.Navigation.PopAsync();
             // 変更結果を保存する
             if (swDue.IsToggled == true)
             {
@@ -46,11 +44,18 @@ namespace SampleTodoXForms.Views
             {
                 _item.DueDate = null;
             }
-            _item.Copy(_item_org);
-            // 保存時のコールバックを呼び出し
-            if ( this._saved != null )
+
+            if (_item.Id == "")
             {
-                this._saved();
+                // 項目を追加
+                MessagingCenter.Send(this, "AddItem", _item);
+            }
+            else
+            {
+                // メイン画面から渡されたデータを更新する
+                _item.Copy(_item_org);
+                // 既存項目の更新
+                MessagingCenter.Send(this, "UpdateItem", _item_org);
             }
         }
         /// <summary>
