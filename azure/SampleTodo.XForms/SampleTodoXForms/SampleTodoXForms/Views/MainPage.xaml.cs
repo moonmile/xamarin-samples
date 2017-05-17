@@ -32,16 +32,14 @@ namespace SampleTodoXForms.Views
             // ToDo テーブルを更新対象にする
             todoTable = client.GetTable<ToDo>();
 
-            // items = new ObservableCollection<ToDo>(); // 単純なMVVMパターンの場合
-
             viewModel = new MainViewModel();
             viewModel.Items = new ObservableCollection<ToDo>();
             this.BindingContext = viewModel;
 
-            RefreshItemsFromTableAsync();
-
             // メッセージの受信の設定
             receiveMessage();
+
+            RefreshItemsFromTableAsync();
         }
 
         /// <summary>

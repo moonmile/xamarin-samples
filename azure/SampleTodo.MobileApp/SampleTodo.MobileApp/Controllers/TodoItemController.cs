@@ -21,7 +21,6 @@ namespace SampleTodo.MobileApp.Controllers
         // GET tables/TodoItem
         public IQueryable<TodoItem> GetAllTodoItems()
         {
-            System.Diagnostics.Trace.WriteLine("in GetAllTodoItems");
             return Query();
         }
 
