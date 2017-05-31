@@ -108,29 +108,6 @@ namespace SampleTodo.iOS
 			base.DidReceiveMemoryWarning();
 			// Release any cached data, images, etc that aren't in use.
 		}
-		/*
-		/// <summary>
-		/// 保存ボタンをタップする
-		/// </summary>
-		/// <param name="sender">Sender.</param>
-		partial void BtnSave_Activated(UIBarButtonItem sender)
-		{
-			// 画面からデータを取り込み
-			item.Text = this.textText.Text;
-			if (this.swDue.On == true)
-			{
-				item.DueDate = DateTime.Parse(this.textDue.Text);
-			}
-			else
-			{
-				item.DueDate = null;
-			}
-			item.Completed = this.swCompleted.On;
-			// 前の画面に戻る
-			this.NavigationController.PopViewController(true);
-			Console.WriteLine("BtnSave_Activated in Detail");
-		}
-		*/
 		/// <summary>
 		/// セグエの実行時
 		/// </summary>
@@ -151,8 +128,6 @@ namespace SampleTodo.iOS
 					item.DueDate = null;
 				}
 				item.Completed = this.swCompleted.On;
-				// 前の画面に戻る
-				// Console.WriteLine("PrepareForSegue in Detail");
 			}
 		}
 	}

@@ -30,7 +30,7 @@ namespace SampleTodo.Droid
             lst.Add(new ToDo() { Id = 3, Text = "item no.3", DueDate = new DateTime(2017, 5, 2), CreatedAt = new DateTime(2017, 3, 3) });
             items = new ToDoFiltableCollection(lst);
             */
-            listview = FindViewById<ListView>(Resource.Id.tableview);
+            listview = FindViewById<ListView>(Resource.Id.listView);
             listview.Adapter = adapter = new TodoAdapter(this, items);
             listview.ItemClick += Listview_ItemClick;
 

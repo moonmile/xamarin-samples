@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.10
+VisualStudioVersion = 15.0.26430.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleTodo.Test", "SampleTodo.Test\SampleTodo.Test.csproj", "{E81F1BB4-4412-478E-8FAD-71D486AD307A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleTodoXForms", "..\SampleTodoXForms\SampleTodoXForms\SampleTodoXForms\SampleTodoXForms.csproj", "{D6AC7700-E124-463B-BB71-2CFC8DD9DAD9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleTodoXForms", "..\SampleTodo.XForms\SampleTodoXForms\SampleTodoXForms\SampleTodoXForms.csproj", "{D6AC7700-E124-463B-BB71-2CFC8DD9DAD9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

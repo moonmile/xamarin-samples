@@ -10,10 +10,10 @@ namespace SampleTodoXForms.Models
     /// <summary>
     /// フィルターができるコレクションクラス
     /// </summary>
-    public class ToDoFiltableCollection : ObservableCollection<ToDo>
-    {
-        // 元のリストデータ
-        private List<ToDo> _items;
+public class ToDoFiltableCollection : ObservableCollection<ToDo>
+{
+    // 元のリストデータ
+    private List<ToDo> _items;
         // ソート用の項目
         bool _dispComplted = true;
         int _sortOrder = 0;

@@ -61,7 +61,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\SampleTodoXForms\SampleTodoXForms\SampleTodoXForms\SampleTodoXForms.csproj">
+    <ProjectReference Include="..\..\SampleTodo.XForms\SampleTodoXForms\SampleTodoXForms\SampleTodoXForms.csproj">
       <Project>{d6ac7700-e124-463b-bb71-2cfc8dd9dad9}</Project>
       <Name>SampleTodoXForms</Name>
     </ProjectReference>

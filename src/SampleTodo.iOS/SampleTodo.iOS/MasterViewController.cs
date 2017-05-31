@@ -15,24 +15,24 @@ namespace SampleTodo.iOS
             Title = NSBundle.MainBundle.LocalizedString("Master", "Master");
         }
 
-        public override void ViewDidLoad()
-        {
-            base.ViewDidLoad();
+public override void ViewDidLoad()
+{
+    base.ViewDidLoad();
 
-            // Perform any additional setup after loading the view, typically from a nib.
-            // 内部ストレージから読み込み
-            items = new ToDoFiltableCollection();
-            this.Load();
-            /*
-            var lst = new List<ToDo>();
-            lst.Add(new ToDo() { Id = 1, Text = "item no.1", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
-            lst.Add(new ToDo() { Id = 2, Text = "item no.2", DueDate = new DateTime(2017, 5, 3), CreatedAt = new DateTime(2017, 3, 2) });
-            lst.Add(new ToDo() { Id = 3, Text = "item no.3", DueDate = new DateTime(2017, 5, 2), CreatedAt = new DateTime(2017, 3, 3) });
-            // lst.Add(new ToDo() { Id = 4, Text = "item no.4", DueDate = null, CreatedAt = new DateTime(2017, 3, 4) });
-            items = new ToDoFiltableCollection(lst);
-            */
-            TableView.Source = new DataSource(this, items);
-        }
+    // Perform any additional setup after loading the view, typically from a nib.
+    // 内部ストレージから読み込み
+    items = new ToDoFiltableCollection();
+    this.Load();
+    /*
+    var lst = new List<ToDo>();
+    lst.Add(new ToDo() { Id = 1, Text = "item no.1", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
+    lst.Add(new ToDo() { Id = 2, Text = "item no.2", DueDate = new DateTime(2017, 5, 3), CreatedAt = new DateTime(2017, 3, 2) });
+    lst.Add(new ToDo() { Id = 3, Text = "item no.3", DueDate = new DateTime(2017, 5, 2), CreatedAt = new DateTime(2017, 3, 3) });
+    // lst.Add(new ToDo() { Id = 4, Text = "item no.4", DueDate = null, CreatedAt = new DateTime(2017, 3, 4) });
+    items = new ToDoFiltableCollection(lst);
+    */
+    TableView.Source = new DataSource(this, items);
+}
 
         // 表示するデータ
         ToDoFiltableCollection items;
@@ -82,32 +82,30 @@ namespace SampleTodo.iOS
 			}
 		}
 
-		[Action("UnwindToMasterView:")]
-		public void UnwindToMasterView(UIStoryboardSegue segue)
-		{
-			if (segue.Identifier == "unwindFromDetail")
-			{
-				Console.WriteLine("UnwindToMasterView in Master from Detail");
-				// 詳細画面から戻る場合
-				var vc = segue.SourceViewController as DetailViewController;
-				if (vc != null)
-				{
-					this.UpdateItem(vc.Item);
-				}
-			}
-			if (segue.Identifier == "unwindFromSetting")
-			{
-				Console.WriteLine("UnwindToMasterView in Master from Setting");
-				// 設定画面から戻る場合
-				var vc = segue.SourceViewController as SettingViewController;
-				if (vc != null)
-				{
-					this.appSetting = vc.AppSetting;
-					this.items.SetFilter(appSetting.DispCompleted, appSetting.SortOrder);
-					this.items.UpdateFilter();
-				}
-			}
-		}
+        [Action("UnwindToMasterView:")]
+        public void UnwindToMasterView(UIStoryboardSegue segue)
+        {
+	        if (segue.Identifier == "unwindFromDetail")
+	        {
+		        // 詳細画面から戻る場合
+		        var vc = segue.SourceViewController as DetailViewController;
+		        if (vc != null)
+		        {
+			        this.UpdateItem(vc.Item);
+		        }
+	        }
+	        if (segue.Identifier == "unwindFromSetting")
+	        {
+		        // 設定画面から戻る場合
+		        var vc = segue.SourceViewController as SettingViewController;
+		        if (vc != null)
+		        {
+			        this.appSetting = vc.AppSetting;
+			        this.items.SetFilter(appSetting.DispCompleted, appSetting.SortOrder);
+			        this.items.UpdateFilter();
+		        }
+	        }
+        }
 		public void UpdateItem(ToDo item)
 		{
 			if (item.Id == 0)

@@ -35,29 +35,10 @@ namespace SampleTodo.Droid
             swDispCompeted = FindViewById<Switch>(Resource.Id.swDispCompleted);
             swDispCompeted.Checked = dispCompleted;
             spOrder.SetSelection(sortOrder);
-
-            var btnBack = FindViewById<Button>(Resource.Id.buttonBack);
-            btnBack.Click += BtnBack_Click;
-
         }
 
         Switch swDispCompeted;
         Spinner spOrder;
-
-
-        /// <summary>
-        /// 前の画面に戻る
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BtnBack_Click(object sender, EventArgs e)
-        {
-            var intent = new Intent();
-            intent.PutExtra("DispCompleted", swDispCompeted.Checked);
-            intent.PutExtra("SortOrder", spOrder.SelectedItemPosition);
-            SetResult(Result.Ok, intent);
-            Finish();
-        }
 
         /// <summary>
         /// 戻るボタンをタップしたとき

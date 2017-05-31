@@ -42,5 +42,6 @@
         android:layout_height="match_parent"
         android:id="@+id/tableview"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/toolbar2" />
 </RelativeLayout>

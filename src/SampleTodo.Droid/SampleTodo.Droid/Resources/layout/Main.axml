@@ -14,14 +14,12 @@
             android:text="設定"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@null"
             android:id="@+id/buttonSetting" />
         <Button
             android:text="新規"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:background="@null"
             android:id="@+id/buttonNew" />
     </Toolbar>
     <ListView
@@ -29,5 +27,5 @@
         android:minHeight="25px"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/tableview" />
+        android:id="@+id/listView" />
 </LinearLayout>
