@@ -32,18 +32,45 @@ namespace SampleTodoXForms.Models
                 this.OnPropertyChanged(nameof(StrDueDate));
             }
         }
+        // 完了フラグ
+        public bool Completed { get; set; }
+        // 作成日
+        public DateTime CreatedAt { get; set; }
+
+        /// <summary>
+        /// 期日の表示/非表示
+        /// </summary>
         public bool UseDueDate
         {
             get
             {
                 return this.DueDate != null;
             }
+            set
+            {
+                if (value == false)
+                {
+                    this.dueDate = null;
+                }
+                else
+                {
+                    this.dueDate = DateTime.Now;
+                }
+                this.OnPropertyChanged(nameof(UseDueDate));
+            }
         }
+        /// <summary>
+        /// Xamarin.Forms の DatePicker 用
+        /// </summary>
         public DateTime DispDueDate
         {
             get
             {
                 return this.DueDate == null ? DateTime.Now : DueDate.Value;
+            }
+            set
+            {
+                this.dueDate = value;
             }
         }
         public string StrDueDate
@@ -53,10 +80,6 @@ namespace SampleTodoXForms.Models
                 return this.DueDate == null ? "" : DueDate.Value.ToString("yyyy-MM-dd");
             }
         }
-        // 完了
-        public bool Completed { get; set; }
-        // 作成日
-        public DateTime CreatedAt { get; set; }
 
 
         /// <summary>
