@@ -26,12 +26,8 @@ namespace SampleTodoXForms.Views
             pickOrder.Items.Add("項目名順");
             pickOrder.Items.Add("期日順");
             pickOrder.SelectedIndex = _item.SortOrder;
-            // コールバックを設定
-            _callback = callback;
-
         }
         Setting _item;
-        Action _callback;
 
         /// <summary>
         /// 前の画面に戻る

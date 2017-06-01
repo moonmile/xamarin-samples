@@ -10,10 +10,10 @@ namespace SampleTodoXForms.Models
     /// <summary>
     /// フィルターができるコレクションクラス
     /// </summary>
-public class ToDoFiltableCollection : ObservableCollection<ToDo>
-{
-    // 元のリストデータ
-    private List<ToDo> _items;
+    public class ToDoFiltableCollection : ObservableCollection<ToDo>
+    {
+        // 元のリストデータ
+        private List<ToDo> _items;
         // ソート用の項目
         bool _dispComplted = true;
         int _sortOrder = 0;
@@ -63,10 +63,10 @@ public class ToDoFiltableCollection : ObservableCollection<ToDo>
         /// </summary>
         /// <param name="id"></param>
         /// <param name="item"></param>
-        public void Update( int id, ToDo item )
+        public void Update(int id, ToDo item)
         {
             var it = _items.First(x => x.Id == id);
-            if ( it != null )
+            if (it != null)
             {
                 item.Copy(it);
                 UpdateFilter();

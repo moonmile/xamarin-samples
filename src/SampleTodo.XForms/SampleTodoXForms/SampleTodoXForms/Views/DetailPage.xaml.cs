@@ -35,22 +35,17 @@ namespace SampleTodoXForms.Views
         /// <param name="e"></param>
         async void Save_Clicked(object sender, EventArgs e)
         {
-            // 元に戻る
+            // 元の画面を表示
             await this.Navigation.PopAsync();
             // 変更結果を保存する
+            /*
             if (swDue.IsToggled == true )
             {
                 _item.DueDate = dpDue.Date;
-            } else
+            }
+            else
             {
                 _item.DueDate = null;
-            }
-            // _item.Copy(_item_org);
-            /*
-            // 保存時のコールバックを呼び出し
-            if ( this._saved != null )
-            {
-                this._saved();
             }
             */
             if ( _item.Id == 0 )
@@ -81,6 +76,7 @@ namespace SampleTodoXForms.Views
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        /*
         private void Switch_Toggled(object sender, ToggledEventArgs e)
         {
             if ( swDue.IsToggled )
@@ -97,5 +93,6 @@ namespace SampleTodoXForms.Views
                 dpDue.IsVisible = false;
             }
         }
+        */
     }
 }

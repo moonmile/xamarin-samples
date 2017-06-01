@@ -17,25 +17,10 @@
         android:theme="?attr/actionBarTheme"
         android:minHeight="?attr/actionBarSize"
         android:layout_centerHorizontal="true"
-        android:id="@+id/toolbar2" />
+        android:id="@+id/toolbar2">
 
-    <Button
-        android:text="設定"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/buttonSetting"
-        android:layout_alignBottom="@+id/toolbar2"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+    </android.support.v7.widget.Toolbar>
 
-    <Button
-        android:text="新規"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/buttonNew"
-        android:layout_alignBottom="@+id/toolbar2"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true" />
 
     <ListView
         android:layout_width="match_parent"
@@ -44,4 +29,22 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/toolbar2" />
+
+    <Button
+        android:id="@+id/buttonNew"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tableview"
+        android:layout_alignParentEnd="true"
+        android:text="新規"
+        android:layout_alignParentTop="true" />
+
+    <Button
+        android:id="@+id/buttonSetting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/buttonNew"
+        android:layout_alignParentStart="true"
+        android:text="設定"
+        android:layout_alignParentTop="true" />
 </RelativeLayout>
