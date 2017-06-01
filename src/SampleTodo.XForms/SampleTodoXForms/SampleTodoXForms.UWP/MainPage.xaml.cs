@@ -12,34 +12,4 @@ namespace SampleTodoXForms.UWP
             LoadApplication(new SampleTodoXForms.App());
         }
     }
-
-
-    public class ToDoStorage : SampleTodoXForms.Views.IToDoStorage
-    {
-
-        private string xml = "";
-
-
-        public Stream OpenReader(string file)
-        {
-            if (xml == "")
-            {
-                return null;
-            }
-            else
-            {
-                byte[] data = System.Text.Encoding.UTF8.GetBytes(xml);
-                var st = new MemoryStream(data);
-                return st;
-            }
-        }
-
-
-        public Stream OpenWriter(string file)
-        {
-            var mem = new MemoryStream();
-            return mem;
-        }
-    }
-
 }
