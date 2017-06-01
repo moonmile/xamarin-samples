@@ -1,9 +1,7 @@
-
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using SampleTodo.iOS.Models;
-
+using SampleTodoXForms.Models;
 using Foundation;
 using UIKit;
 

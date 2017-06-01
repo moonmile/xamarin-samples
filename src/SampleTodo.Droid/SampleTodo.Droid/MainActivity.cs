@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Android.Views;
 using Android.Content;
 using System;
-using SampleTodo.Droid.Models;
+using SampleTodoXForms.Models;
 using Android.Runtime;
 
 namespace SampleTodo.Droid
