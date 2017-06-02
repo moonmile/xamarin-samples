@@ -152,5 +152,15 @@ namespace SampleTodoXForms.Models
             }
             return true;
         }
+
+        public static ToDoFiltableCollection MakeSampleData()
+        {
+            var lst = new List<ToDo>();
+            lst.Add(new ToDo() { Id = 1, Text = "sample no.1", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
+            lst.Add(new ToDo() { Id = 2, Text = "sample no.2", DueDate = new DateTime(2017, 5, 3), CreatedAt = new DateTime(2017, 3, 2) });
+            lst.Add(new ToDo() { Id = 3, Text = "sample no.3", DueDate = new DateTime(2017, 5, 2), CreatedAt = new DateTime(2017, 3, 3) });
+            return new ToDoFiltableCollection(lst);
+        }
     }
 }
+

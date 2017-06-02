@@ -87,14 +87,7 @@ namespace SampleTodoXForms.Views
         /// <param name="e"></param>
         async void AddItem_Clicked(object sender, EventArgs e)
         {
-            var item = new ToDo()
-            {
-                Id = 0,
-                Text = "New ToDo",
-                DueDate = null,         // 期限なし
-                Completed = false,
-                CreatedAt = DateTime.Now
-            };
+            var item = ToDo.CreateNew();
             await Navigation.PushAsync(new DetailPage(item));
         }
 
@@ -131,11 +124,7 @@ namespace SampleTodoXForms.Views
                 if (st == null || items.Load(st) == false)
                 {
                     // 初期データを作成する
-                    var lst = new List<ToDo>();
-                    lst.Add(new ToDo() { Id = 1, Text = "sample no.1", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
-                    lst.Add(new ToDo() { Id = 2, Text = "sample no.2", DueDate = new DateTime(2017, 5, 3), CreatedAt = new DateTime(2017, 3, 2) });
-                    lst.Add(new ToDo() { Id = 3, Text = "sample no.3", DueDate = new DateTime(2017, 5, 2), CreatedAt = new DateTime(2017, 3, 3) });
-                    items = new ToDoFiltableCollection(lst);
+                    items = ToDoFiltableCollection.MakeSampleData();
                 }
             }
             viewModel.Items = items;

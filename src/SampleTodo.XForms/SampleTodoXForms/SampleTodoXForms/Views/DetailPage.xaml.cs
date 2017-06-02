@@ -37,17 +37,6 @@ namespace SampleTodoXForms.Views
         {
             // 元の画面を表示
             await this.Navigation.PopAsync();
-            // 変更結果を保存する
-            /*
-            if (swDue.IsToggled == true )
-            {
-                _item.DueDate = dpDue.Date;
-            }
-            else
-            {
-                _item.DueDate = null;
-            }
-            */
             if ( _item.Id == 0 )
             {
                 // 項目を追加
@@ -70,29 +59,5 @@ namespace SampleTodoXForms.Views
             // 保存せず前の画面に戻る
             return base.OnBackButtonPressed();
         }
-
-        /// <summary>
-        /// 期日のトグルボタン
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /*
-        private void Switch_Toggled(object sender, ToggledEventArgs e)
-        {
-            if ( swDue.IsToggled )
-            {
-                if (_item.DueDate == null)
-                {
-                    _item.DueDate = DateTime.Now;
-                }
-                dpDue.IsVisible = true;
-            }
-            else
-            {
-                _item.DueDate = null;
-                dpDue.IsVisible = false;
-            }
-        }
-        */
     }
 }

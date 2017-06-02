@@ -24,9 +24,11 @@ namespace SampleTodoXForms.Models
 
         // 期日
         DateTime? dueDate;
-        public DateTime? DueDate {
+        public DateTime? DueDate
+        {
             get { return dueDate; }
-            set {
+            set
+            {
                 SetProperty(ref dueDate, value);
                 this.OnPropertyChanged(nameof(DispDueDate));
                 this.OnPropertyChanged(nameof(StrDueDate));
@@ -87,7 +89,7 @@ namespace SampleTodoXForms.Models
         /// </summary>
         /// <param name="target"></param>
         /// <returns></returns>
-        public ToDo Copy( ToDo target = null )
+        public ToDo Copy(ToDo target = null)
         {
             if (target == null)
             {
@@ -99,6 +101,21 @@ namespace SampleTodoXForms.Models
             target.Completed = this.Completed;
             target.CreatedAt = this.CreatedAt;
             return target;
+        }
+        /// <summary>
+        /// 初期化メソッド
+        /// </summary>
+        /// <returns></returns>
+        public static ToDo CreateNew()
+        {
+            return new ToDo()
+            {
+                Id = 0,
+                Text = "New ToDo",
+                DueDate = null,         // 期限なし
+                Completed = false,
+                CreatedAt = DateTime.Now
+            };
         }
     }
 
