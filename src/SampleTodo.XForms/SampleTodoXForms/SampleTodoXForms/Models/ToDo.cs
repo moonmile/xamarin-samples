@@ -40,7 +40,7 @@ namespace SampleTodoXForms.Models
         public DateTime CreatedAt { get; set; }
 
         /// <summary>
-        /// 期日の表示/非表示
+        /// 期日の指定の有無
         /// </summary>
         public bool UseDueDate
         {
@@ -62,7 +62,7 @@ namespace SampleTodoXForms.Models
             }
         }
         /// <summary>
-        /// Xamarin.Forms の DatePicker 用
+        /// 選択型のDatePicker用の変換
         /// </summary>
         public DateTime DispDueDate
         {
@@ -75,6 +75,9 @@ namespace SampleTodoXForms.Models
                 this.dueDate = value;
             }
         }
+        /// <summary>
+        /// ラベル用に文字列に変換
+        /// </summary>
         public string StrDueDate
         {
             get

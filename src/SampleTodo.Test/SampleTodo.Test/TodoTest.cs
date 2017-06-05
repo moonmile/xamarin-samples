@@ -90,7 +90,7 @@ namespace SampleTodo.Test
 
             // ターゲットを指定する
             var item = new ToDo();
-            todo.Copy( item );
+            todo.Copy(item);
             Assert.AreEqual(10, item.Id);
             Assert.AreEqual("test item", item.Text);
             Assert.AreEqual(new DateTime(2017, 5, 1), item.DueDate);
