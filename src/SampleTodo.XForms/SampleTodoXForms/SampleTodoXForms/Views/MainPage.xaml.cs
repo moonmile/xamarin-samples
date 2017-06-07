@@ -19,15 +19,11 @@ namespace SampleTodoXForms.Views
         public MainPage()
         {
             InitializeComponent();
-            // items = new ObservableCollection<ToDo>(); // 単純なMVVMパターンの場合
-
             // 内部ストレージから読み込み
             viewModel = new MainViewModel();
             viewModel.Items = new ToDoFiltableCollection();
             this.Load();
-            viewModel.Items = ToDoFiltableCollection.MakeSampleData();
             this.BindingContext = viewModel;
-
             // メッセージの受信の設定
             receiveMessage();
         }

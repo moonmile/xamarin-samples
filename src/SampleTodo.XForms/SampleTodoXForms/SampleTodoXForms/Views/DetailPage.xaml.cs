@@ -17,7 +17,7 @@ namespace SampleTodoXForms.Views
         {
             InitializeComponent();
         }
-        public DetailPage(ToDo item )
+        public DetailPage(ToDo item)
         {
             InitializeComponent();
             this.BindingContext = _item = item;
@@ -34,7 +34,7 @@ namespace SampleTodoXForms.Views
         {
             // 元の画面を表示
             await this.Navigation.PopAsync();
-            if ( _item.Id == 0 )
+            if (_item.Id == 0)
             {
                 // 項目を追加
                 MessagingCenter.Send(this, "AddItem", _item);

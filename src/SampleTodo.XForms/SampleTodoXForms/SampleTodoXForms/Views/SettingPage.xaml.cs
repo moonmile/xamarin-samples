@@ -17,11 +17,11 @@ namespace SampleTodoXForms.Views
         {
             InitializeComponent();
         }
-        public SettingPage(Setting item, Action callback = null )
+        public SettingPage(Setting item, Action callback = null)
         {
             InitializeComponent();
             this.BindingContext = _item = item;
-
+            
             pickOrder.Items.Add("作成順");
             pickOrder.Items.Add("項目名順");
             pickOrder.Items.Add("期日順");
@@ -29,16 +29,6 @@ namespace SampleTodoXForms.Views
         }
         Setting _item;
 
-        /// <summary>
-        /// 前の画面に戻る
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Back_Clicked(object sender, EventArgs e)
-        {
-            Navigation.PopAsync();
-            MessagingCenter.Send(this, "UpdateSetting");
-        }
         /// <summary>
         /// 戻るボタンをタップ
         /// </summary>
@@ -55,7 +45,7 @@ namespace SampleTodoXForms.Views
         /// <param name="e"></param>
         private void pickOrder_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if ( pickOrder.SelectedIndex != -1 )
+            if (pickOrder.SelectedIndex != -1)
             {
                 _item.SortOrder = pickOrder.SelectedIndex;
             }
