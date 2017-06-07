@@ -30,11 +30,10 @@ namespace SampleTodo.Droid
             string[] items = { "作成日順", "項目名順", "期日順" };
             var ad = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleSpinnerDropDownItem, items);
             spOrder.Adapter = ad;
-            spOrder.ItemSelected += SpSort_ItemSelected;
+            spOrder.SetSelection(sortOrder);
 
             swDispCompeted = FindViewById<Switch>(Resource.Id.swDispCompleted);
             swDispCompeted.Checked = dispCompleted;
-            spOrder.SetSelection(sortOrder);
         }
 
         Switch swDispCompeted;
@@ -50,17 +49,6 @@ namespace SampleTodo.Droid
             intent.PutExtra("SortOrder", spOrder.SelectedItemPosition);
             SetResult(Result.Ok, intent);
             Finish();
-        }
-
-        /// <summary>
-        /// ソート時の項目を選択したとき
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void SpSort_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
-        {
-            int pos = e.Position;
-
         }
     }
 }

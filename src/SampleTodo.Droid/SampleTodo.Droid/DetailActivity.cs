@@ -48,6 +48,7 @@ namespace SampleTodo.Droid
             textCreateAt.Text = item.CreatedAt.ToString("yyyy-MM-dd hh:mm");
 
             // 期日をクリックしたときにカレンダーを表示
+            editDue.Focusable = false;
             editDue.Click += EditDue_Click;
             var btnSave = FindViewById<Button>(Resource.Id.buttonSave);
             btnSave.Click += BtnSave_Click;
@@ -114,7 +115,6 @@ namespace SampleTodo.Droid
 
         private void EditDue_Click(object sender, EventArgs e)
         {
-            var tr = FragmentManager.BeginTransaction();
             var picker = new DatePickerDialogFragment();
             picker.Date = item.DueDate.Value;
             picker.OnOk = dt =>
@@ -129,8 +129,7 @@ namespace SampleTodo.Droid
         class DatePickerDialogFragment : DialogFragment, DatePickerDialog.IOnDateSetListener
         {
             public Action<DateTime> OnOk;
-            public DateTime Date;
-
+            public DateTime Date { get; set; }
             public override Dialog OnCreateDialog(Bundle savedInstanceState)
             {
                 var picker = new DatePickerDialog(Activity, this, Date.Year, Date.Month, Date.Day);
