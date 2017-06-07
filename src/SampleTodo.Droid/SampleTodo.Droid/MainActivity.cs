@@ -23,6 +23,7 @@ namespace SampleTodo.Droid
             // 内部ストレージから読み込み
             items = new ToDoFiltableCollection();
             this.Load();
+            items = ToDoFiltableCollection.MakeSampleData();
             listview = FindViewById<ListView>(Resource.Id.listView);
             listview.Adapter = adapter = new TodoAdapter(this, items);
             listview.ItemClick += Listview_ItemClick;
@@ -69,14 +70,7 @@ namespace SampleTodo.Droid
         /// <param name="e"></param>
         private void BtnNew_Click(object sender, System.EventArgs e)
         {
-            var item = new ToDo()
-            {
-                Id = items.Count + 1,
-                Text = "New ToDo",
-                DueDate = null,         // 期限なし
-                Completed = false,
-                CreatedAt = DateTime.Now
-            };
+            var item = ToDo.CreateNew();
             var intent = new Intent(this, typeof(DetailActivity));
             // データをシリアライズして渡す
             var data = Newtonsoft.Json.JsonConvert.SerializeObject(item);
@@ -120,6 +114,7 @@ namespace SampleTodo.Droid
                         var v = data.GetStringExtra("data");
                         var item = Newtonsoft.Json.JsonConvert.DeserializeObject<ToDo>(v);
                         // データを更新する
+                        item.Id = items.Count + 1;
                         items.Add(item);
                         // アダプターを更新
                         adapter.NotifyDataSetChanged();
@@ -140,7 +135,6 @@ namespace SampleTodo.Droid
                 default:
                     break;
             }
-
         }
         /// <summary>
         /// 内部ストレージに保存
