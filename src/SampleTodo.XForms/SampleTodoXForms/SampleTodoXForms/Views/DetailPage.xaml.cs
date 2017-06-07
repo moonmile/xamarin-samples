@@ -17,16 +17,13 @@ namespace SampleTodoXForms.Views
         {
             InitializeComponent();
         }
-        public DetailPage(ToDo item, Action saved = null )
+        public DetailPage(ToDo item )
         {
             InitializeComponent();
-            this.BindingContext = _item = item.Copy();
-            this._saved = saved;
-            this._item_org = item;
+            this.BindingContext = _item = item;
         }
 
-        ToDo _item, _item_org;
-        Action _saved;
+        ToDo _item;         // 編集中のデータ
 
         /// <summary>
         /// 保存ボタンをタップ
@@ -44,10 +41,8 @@ namespace SampleTodoXForms.Views
             }
             else
             {
-                // メイン画面から渡されたデータを更新する
-                _item.Copy(_item_org);
                 // 既存項目の更新
-                MessagingCenter.Send(this, "UpdateItem", _item_org);
+                MessagingCenter.Send(this, "UpdateItem", _item);
             }
         }
         /// <summary>

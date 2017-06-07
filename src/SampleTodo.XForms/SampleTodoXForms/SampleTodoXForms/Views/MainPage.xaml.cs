@@ -25,6 +25,7 @@ namespace SampleTodoXForms.Views
             viewModel = new MainViewModel();
             viewModel.Items = new ToDoFiltableCollection();
             this.Load();
+            viewModel.Items = ToDoFiltableCollection.MakeSampleData();
             this.BindingContext = viewModel;
 
             // メッセージの受信の設定
@@ -38,6 +39,7 @@ namespace SampleTodoXForms.Views
         {
             MessagingCenter.Subscribe<DetailPage, ToDo>(this, "UpdateItem", (page, item) =>
             {
+                viewModel.Items.Update(item.Id, item);
                 viewModel.Items.UpdateFilter();
                 // 内部ストレージに保存
                 this.Save();
@@ -76,7 +78,7 @@ namespace SampleTodoXForms.Views
             var item = args.SelectedItem as ToDo;
             if (item == null)
                 return;
-            await Navigation.PushAsync(new DetailPage(item));
+            await Navigation.PushAsync(new DetailPage(item.Copy()));
             listView.SelectedItem = null;
         }
 

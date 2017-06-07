@@ -56,7 +56,10 @@ namespace SampleTodoXForms.Models
                 }
                 else
                 {
-                    this.dueDate = DateTime.Now;
+                    if (this.dueDate == null)
+                    {
+                        this.dueDate = DateTime.Now;
+                    }
                 }
                 this.OnPropertyChanged(nameof(UseDueDate));
             }
