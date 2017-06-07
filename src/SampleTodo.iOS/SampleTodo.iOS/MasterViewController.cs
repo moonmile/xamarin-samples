@@ -63,7 +63,7 @@ namespace SampleTodo.iOS
             }
             else if (segue.Identifier == "showSetting")
             {
-                ((SettingViewController)segue.DestinationViewController).AppSetting = this.appSetting;
+                ((SettingViewController)segue.DestinationViewController).SetSetting( appSetting );
             }
         }
 
@@ -78,8 +78,7 @@ namespace SampleTodo.iOS
                 {
                     this.UpdateItem(vc.Item);
                 }
-            }
-            if (segue.Identifier == "unwindFromSetting")
+            } else if (segue.Identifier == "unwindFromSetting")
             {
                 // 設定画面から戻る場合
                 var vc = segue.SourceViewController as SettingViewController;

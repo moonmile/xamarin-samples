@@ -161,15 +161,15 @@ namespace SampleTodo.Droid
         {
             var docs = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
             var file = System.IO.Path.Combine(docs, "save.xml");
-            if ( System.IO.File.Exists( file ))
+            if (System.IO.File.Exists(file))
             {
                 using (var st = System.IO.File.OpenRead(file))
                 {
-                    if ( items == null )
+                    if (items == null)
                     {
                         items = new ToDoFiltableCollection();
                     }
-                    if ( items.Load(st) == false )
+                    if (items.Load(st) == false)
                     {
                         // 失敗時には、初期データを作成する
                         System.IO.File.Delete(file);
@@ -227,7 +227,7 @@ namespace SampleTodo.Droid
                 view = _activity.LayoutInflater.Inflate(Android.Resource.Layout.SimpleListItem2, null);
             }
             var it = _items[position];
-            view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = it.DueDate == null ? "--" : it.DueDate.Value.ToString("yyyy-MM-dd");
+            view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = it.StrDueDate;
             view.FindViewById<TextView>(Android.Resource.Id.Text2).Text = it.Text;
             return view;
         }
