@@ -1,4 +1,5 @@
 ﻿using SampleTodoXForms.Models;
+using SampleTodoXForms.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,38 +18,22 @@ namespace SampleTodoXForms.Views
         {
             InitializeComponent();
         }
-        public SettingPage(Setting item, Action callback = null)
+        public SettingPage(Setting item)
         {
             InitializeComponent();
-            this.BindingContext = _item = item;
-            
-            pickOrder.Items.Add("作成順");
-            pickOrder.Items.Add("項目名順");
-            pickOrder.Items.Add("期日順");
-            pickOrder.SelectedIndex = _item.SortOrder;
+            viewModel = new SettingViewModel(item);
+            BindingContext = viewModel;
         }
-        Setting _item;
+        SettingViewModel viewModel;
 
         /// <summary>
-        /// 戻るボタンをタップ
+        /// 画面を非表示にするとき
         /// </summary>
-        /// <returns></returns>
-        protected override bool OnBackButtonPressed()
+        protected override void OnDisappearing()
         {
             MessagingCenter.Send(this, "UpdateSetting");
-            return base.OnBackButtonPressed();
+            base.OnDisappearing();
         }
-        /// <summary>
-        /// 表示順の選択時
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void pickOrder_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (pickOrder.SelectedIndex != -1)
-            {
-                _item.SortOrder = pickOrder.SelectedIndex;
-            }
-        }
+
     }
 }
