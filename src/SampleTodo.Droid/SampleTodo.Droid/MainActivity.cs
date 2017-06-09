@@ -7,6 +7,7 @@ using Android.Content;
 using System;
 using SampleTodoXForms.Models;
 using Android.Runtime;
+using System.IO;
 
 namespace SampleTodo.Droid
 {
@@ -23,7 +24,6 @@ namespace SampleTodo.Droid
             // 内部ストレージから読み込み
             items = new ToDoFiltableCollection();
             this.Load();
-            items = ToDoFiltableCollection.MakeSampleData();
             listview = FindViewById<ListView>(Resource.Id.listView);
             listview.Adapter = adapter = new TodoAdapter(this, items);
             listview.ItemClick += Listview_ItemClick;

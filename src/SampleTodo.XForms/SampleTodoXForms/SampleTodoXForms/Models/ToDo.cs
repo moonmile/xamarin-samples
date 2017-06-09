@@ -42,6 +42,7 @@ namespace SampleTodoXForms.Models
         /// <summary>
         /// 期日の指定の有無
         /// </summary>
+        [System.Xml.Serialization.XmlIgnore]
         public bool UseDueDate
         {
             get
@@ -67,6 +68,7 @@ namespace SampleTodoXForms.Models
         /// <summary>
         /// 選択型のDatePicker用の変換
         /// </summary>
+        [System.Xml.Serialization.XmlIgnore]
         public DateTime DispDueDate
         {
             get
