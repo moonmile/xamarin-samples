@@ -18,8 +18,6 @@ namespace SampleTodo.iOS
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-
-            // Perform any additional setup after loading the view, typically from a nib.
             // 内部ストレージから読み込み
             items = new ToDoFiltableCollection();
             this.Load();

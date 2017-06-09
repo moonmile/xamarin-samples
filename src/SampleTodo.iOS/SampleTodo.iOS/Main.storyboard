@@ -185,7 +185,7 @@
                     <navigationItem key="navigationItem" title="Detail" id="cra-N8-TIN">
                         <barButtonItem key="rightBarButtonItem" title="保存" id="408">
                             <connections>
-                                <segue id="511" destination="wrf-Md-isS" kind="unwind" unwindAction="UnwindToMasterView:"/>
+                                <segue id="511" destination="wrf-Md-isS" kind="unwind" unwindAction="UnwindToMasterView:" identifier="unwindFromDetail"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
