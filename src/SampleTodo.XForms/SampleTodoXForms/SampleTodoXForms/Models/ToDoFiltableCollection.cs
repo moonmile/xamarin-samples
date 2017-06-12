@@ -152,7 +152,6 @@ namespace SampleTodoXForms.Models
             }
             return true;
         }
-
         public static ToDoFiltableCollection MakeSampleData()
         {
             var lst = new List<ToDo>();
@@ -161,6 +160,36 @@ namespace SampleTodoXForms.Models
             lst.Add(new ToDo() { Id = 3, Text = "sample no.3", DueDate = new DateTime(2017, 5, 2), CreatedAt = new DateTime(2017, 3, 3) });
             return new ToDoFiltableCollection(lst);
         }
+#if __ANDROID__
+        /// <summary>
+        /// JSON形式で保存
+        /// </summary>
+        /// <param name="st"></param>
+        /// <returns></returns>
+        public bool SaveJson(System.IO.Stream st)
+        {
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            var sw = new System.IO.StreamWriter(st);
+            sw.WriteLine(json);
+            return true;
+        }
+        /// <summary>
+        /// JSON形式から復元
+        /// </summary>
+        /// <param name="st"></param>
+        /// <returns></returns>
+        public bool LoadJson(System.IO.Stream st)
+        {
+            var sr = new System.IO.StreamReader(st);
+            var json = sr.ReadToEnd();
+            var newItems = Newtonsoft.Json.JsonConvert.DeserializeObject<ToDoFiltableCollection>(json);
+            this._items = newItems._items;
+            this.UpdateFilter();
+            return true;
+        }
+#endif
+
     }
+
 }
 
