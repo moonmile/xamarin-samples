@@ -2,10 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using SampleTodo.iOS.Models;
 
 using Foundation;
 using UIKit;
+using SampleTodoXForms.Models;
 
 namespace SampleTodo.iOS
 {
@@ -66,23 +66,7 @@ namespace SampleTodo.iOS
 
 		}
 
-		/// <summary>
-		/// セグエの実行時
-		/// </summary>
-		/// <param name="segue"></param>
-		/// <param name="sender"></param>
-		public override void PrepareForSegue(UIStoryboardSegue segue, NSObject sender)
-		{
-			if (segue.Identifier == "")
-			{
-			}
-
-
-		}
-
-
-
-		class OrderViewModel : UIPickerViewModel
+        class OrderViewModel : UIPickerViewModel
 		{
 			private List<string> _myItems;
 			protected int selectedIndex = 0;

@@ -4,15 +4,12 @@
              x:Class="SampleTodoXForms.Views.SettingPage">
     <ContentPage.Content>
         <StackLayout Spacing="20" Padding="15">
-
             <Label Text="完了項目の表示" FontSize="Medium" />
             <Switch IsToggled="{Binding DispCompleted}" />
-
             <Label Text="表示順" FontSize="Medium" />
-            <Picker x:Name="pickOrder" SelectedIndexChanged="pickOrder_SelectedIndexChanged" />
-
-            <Button Text="戻る" Clicked="Back_Clicked"/>
-
+            <Picker 
+                ItemsSource="{Binding SortItems}"
+                SelectedIndex="{Binding SortOrder}"  />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

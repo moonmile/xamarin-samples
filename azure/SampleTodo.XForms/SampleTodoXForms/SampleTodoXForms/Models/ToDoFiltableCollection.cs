@@ -64,10 +64,10 @@ namespace SampleTodoXForms.Models
         /// </summary>
         /// <param name="id"></param>
         /// <param name="item"></param>
-        public void Update( int id, ToDo item )
+        public void Update(int id, ToDo item)
         {
             var it = _items.First(x => x.Id == id);
-            if ( it != null )
+            if (it != null)
             {
                 item.Copy(it);
                 UpdateFilter();
@@ -153,6 +153,44 @@ namespace SampleTodoXForms.Models
             }
             return true;
         }
+        public static ToDoFiltableCollection MakeSampleData()
+        {
+            var lst = new List<ToDo>();
+            lst.Add(new ToDo() { Id = 1, Text = "sample no.1", DueDate = new DateTime(2017, 5, 1), CreatedAt = new DateTime(2017, 3, 1) });
+            lst.Add(new ToDo() { Id = 2, Text = "sample no.2", DueDate = new DateTime(2017, 5, 3), CreatedAt = new DateTime(2017, 3, 2) });
+            lst.Add(new ToDo() { Id = 3, Text = "sample no.3", DueDate = new DateTime(2017, 5, 2), CreatedAt = new DateTime(2017, 3, 3) });
+            return new ToDoFiltableCollection(lst);
+        }
+#if __ANDROID__
+        /// <summary>
+        /// JSON形式で保存
+        /// </summary>
+        /// <param name="st"></param>
+        /// <returns></returns>
+        public bool SaveJson(System.IO.Stream st)
+        {
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(this);
+            var sw = new System.IO.StreamWriter(st);
+            sw.WriteLine(json);
+            return true;
+        }
+        /// <summary>
+        /// JSON形式から復元
+        /// </summary>
+        /// <param name="st"></param>
+        /// <returns></returns>
+        public bool LoadJson(System.IO.Stream st)
+        {
+            var sr = new System.IO.StreamReader(st);
+            var json = sr.ReadToEnd();
+            var newItems = Newtonsoft.Json.JsonConvert.DeserializeObject<ToDoFiltableCollection>(json);
+            this._items = newItems._items;
+            this.UpdateFilter();
+            return true;
+        }
+#endif
+
     }
+
 }
 #endif

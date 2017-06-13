@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Android.Views;
 using Android.Content;
 using System;
-using SampleTodo.Droid.Models;
+using SampleTodoXForms.Models;
 using Android.Runtime;
 using Microsoft.WindowsAzure.MobileServices;
 using System.Threading.Tasks;
@@ -36,7 +36,7 @@ namespace SampleTodo.Droid
             todoTable = client.GetTable<ToDo>();
             items = new List<ToDo>();
 
-            listview = FindViewById<ListView>(Resource.Id.tableview);
+            listview = FindViewById<ListView>(Resource.Id.listView);
             listview.Adapter = adapter = new TodoAdapter(this, items);
             listview.ItemClick += Listview_ItemClick;
 
@@ -86,6 +86,7 @@ namespace SampleTodo.Droid
                 {
                     items.Add(it);
                 }
+                // アダプターを更新する
                 adapter.NotifyDataSetChanged();
             }
             catch (Exception ex)
@@ -129,14 +130,7 @@ namespace SampleTodo.Droid
         /// <param name="e"></param>
         private void BtnNew_Click(object sender, System.EventArgs e)
         {
-            var item = new ToDo()
-            {
-                Id = "",
-                Text = "New ToDo",
-                DueDate = null,         // 期限なし
-                Completed = false,
-                CreatedAt = DateTime.Now
-            };
+            var item = ToDo.CreateNew();
             var intent = new Intent(this, typeof(DetailActivity));
             // データをシリアライズして渡す
             var data = Newtonsoft.Json.JsonConvert.SerializeObject(item);
@@ -168,7 +162,7 @@ namespace SampleTodo.Droid
                         var item = Newtonsoft.Json.JsonConvert.DeserializeObject<ToDo>(v);
                         // データを更新する
                         await todoTable.UpdateAsync(item);
-                        // アダプターを更新
+                        // 表示を更新
                         await RefreshItemsFromTableAsync();
                     }
                     break;
@@ -179,7 +173,7 @@ namespace SampleTodo.Droid
                         var item = Newtonsoft.Json.JsonConvert.DeserializeObject<ToDo>(v);
                         // データを更新する
                         await todoTable.InsertAsync(item);
-                        // アダプターを更新
+                        // 表示を更新
                         await RefreshItemsFromTableAsync();
                     }
                     break;
@@ -188,8 +182,7 @@ namespace SampleTodo.Droid
                     {
                         setting.DispCompleted = data.GetBooleanExtra("DispCompleted", true);
                         setting.SortOrder = data.GetIntExtra("SortOrder", 0);
-                        // items.SetFilter(setting.DispCompleted, setting.SortOrder);
-                        // アダプターを更新
+                        // 表示を更新
                         await RefreshItemsFromTableAsync();
                     }
                     break;
@@ -241,7 +234,7 @@ namespace SampleTodo.Droid
                 view = _activity.LayoutInflater.Inflate(Android.Resource.Layout.SimpleListItem2, null);
             }
             var it = _items[position];
-            view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = it.DueDate == null ? "--" : it.DueDate.Value.ToString("yyyy-MM-dd");
+            view.FindViewById<TextView>(Android.Resource.Id.Text1).Text = it.StrDueDate;
             view.FindViewById<TextView>(Android.Resource.Id.Text2).Text = it.Text;
             return view;
         }

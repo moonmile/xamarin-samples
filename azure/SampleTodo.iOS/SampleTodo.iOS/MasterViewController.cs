@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using UIKit;
 using Foundation;
 using CoreGraphics;
-using SampleTodo.iOS.Models;
 using Microsoft.WindowsAzure.MobileServices;
 using System.Threading.Tasks;
 using System.Linq;
+using SampleTodoXForms.Models;
 
 namespace SampleTodo.iOS
 {
@@ -29,15 +29,12 @@ namespace SampleTodo.iOS
             base.ViewDidLoad();
 
             // Perform any additional setup after loading the view, typically from a nib.
-
-
             // Azure Mobile Service を使う
             client = new MobileServiceClient(applicationURL);
             // ToDo テーブルを更新対象にする
             todoTable = client.GetTable<ToDo>();
             items = new List<ToDo>();
             TableView.Source = new DataSource(this, items);
-
             await RefreshItemsFromTableAsync();
         }
 
@@ -119,15 +116,8 @@ namespace SampleTodo.iOS
 			}
 			else if (segue.Identifier == "showDetailForAdd")
 			{
-                var item = new ToDo()
-                {
-                    Id = "",
-					Text = "New ToDo",
-					DueDate = null,         // 期限なし
-					Completed = false,
-					CreatedAt = DateTime.Now
-				};
-				((DetailViewController)segue.DestinationViewController).SetDetailItem(item);
+                var item = ToDo.CreateNew();
+                ((DetailViewController)segue.DestinationViewController).SetDetailItem(item);
 			}
 			else if (segue.Identifier == "showSetting")
 			{
@@ -145,18 +135,7 @@ namespace SampleTodo.iOS
 				var vc = segue.SourceViewController as DetailViewController;
 				if (vc != null)
 				{
-                    // データを更新する
-                    if ( vc.Item.Id != "" )
-                    {
-                        await todoTable.UpdateAsync(vc.Item);
-                    }
-                    else
-                    {
-                        // データを更新する
-                        await todoTable.InsertAsync(vc.Item);
-                    }
-                    // 表示を更新する
-                    await RefreshItemsFromTableAsync();
+                    await UpdateItem(vc.Item);
                 }
             }
 			if (segue.Identifier == "unwindFromSetting")
@@ -172,6 +151,23 @@ namespace SampleTodo.iOS
                 }
             }
 		}
+        public async Task UpdateItem(ToDo item)
+        {
+            if (item.Id == "")
+            {
+                // 新規作成の場合
+                await todoTable.InsertAsync(item);
+            }
+            else
+            {
+                // 更新の場合
+                await todoTable.UpdateAsync(item);
+            }
+            // 表示を更新する
+            await RefreshItemsFromTableAsync();
+        }
+
+
         class DataSource : UITableViewSource
         {
             static readonly NSString CellIdentifier = new NSString("Cell");

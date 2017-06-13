@@ -63,9 +63,6 @@ namespace SampleTodo.Droid
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f05000f
-			public const int buttonBack = 2131034127;
-			
 			// aapt resource value: 0x7f050009
 			public const int buttonNew = 2131034121;
 			
@@ -81,6 +78,9 @@ namespace SampleTodo.Droid
 			// aapt resource value: 0x7f050003
 			public const int editText = 2131034115;
 			
+			// aapt resource value: 0x7f05000a
+			public const int listView = 2131034122;
+			
 			// aapt resource value: 0x7f05000e
 			public const int spOrder = 2131034126;
 			
@@ -92,9 +92,6 @@ namespace SampleTodo.Droid
 			
 			// aapt resource value: 0x7f050004
 			public const int swDue = 2131034116;
-			
-			// aapt resource value: 0x7f05000a
-			public const int tableview = 2131034122;
 			
 			// aapt resource value: 0x7f050007
 			public const int textCreateAt = 2131034119;

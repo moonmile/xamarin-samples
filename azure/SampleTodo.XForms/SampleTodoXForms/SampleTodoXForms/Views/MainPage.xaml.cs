@@ -26,19 +26,15 @@ namespace SampleTodoXForms.Views
         public MainPage()
         {
             InitializeComponent();
-
             // Azure Mobile Service を使う
             client = new MobileServiceClient(applicationURL);
             // ToDo テーブルを更新対象にする
             todoTable = client.GetTable<ToDo>();
-
             viewModel = new MainViewModel();
             viewModel.Items = new ObservableCollection<ToDo>();
             this.BindingContext = viewModel;
-
             // メッセージの受信の設定
             receiveMessage();
-
             RefreshItemsFromTableAsync();
         }
 
@@ -142,14 +138,7 @@ namespace SampleTodoXForms.Views
         /// <param name="e"></param>
         async void AddItem_Clicked(object sender, EventArgs e)
         {
-            var item = new ToDo()
-            {
-                Id = "",
-                Text = "New ToDo",
-                DueDate = null,         // 期限なし
-                Completed = false,
-                CreatedAt = DateTime.Now
-            };
+            var item = ToDo.CreateNew();
             await Navigation.PushAsync(new DetailPage(item));
         }
 

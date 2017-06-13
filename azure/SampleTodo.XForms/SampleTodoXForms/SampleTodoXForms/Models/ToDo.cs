@@ -32,20 +32,55 @@ namespace SampleTodoXForms.Models
                 this.OnPropertyChanged(nameof(StrDueDate));
             }
         }
+        // 完了フラグ
+        public bool Completed { get; set; }
+        // 作成日
+        public DateTime CreatedAt { get; set; }
+
+        /// <summary>
+        /// 期日の指定の有無
+        /// </summary>
+        [System.Xml.Serialization.XmlIgnore]
         public bool UseDueDate
         {
             get
             {
                 return this.DueDate != null;
             }
+            set
+            {
+                if (value == false)
+                {
+                    this.dueDate = null;
+                }
+                else
+                {
+                    if (this.dueDate == null)
+                    {
+                        this.dueDate = DateTime.Now;
+                    }
+                }
+                this.OnPropertyChanged(nameof(UseDueDate));
+            }
         }
+        /// <summary>
+        /// 選択型のDatePicker用の変換
+        /// </summary>
+        [System.Xml.Serialization.XmlIgnore]
         public DateTime DispDueDate
         {
             get
             {
                 return this.DueDate == null ? DateTime.Now : DueDate.Value;
             }
+            set
+            {
+                this.dueDate = value;
+            }
         }
+        /// <summary>
+        /// ラベル用に文字列に変換
+        /// </summary>
         public string StrDueDate
         {
             get
@@ -53,10 +88,6 @@ namespace SampleTodoXForms.Models
                 return this.DueDate == null ? "" : DueDate.Value.ToString("yyyy-MM-dd");
             }
         }
-        // 完了
-        public bool Completed { get; set; }
-        // 作成日
-        public DateTime CreatedAt { get; set; }
 
 
         /// <summary>
@@ -64,7 +95,7 @@ namespace SampleTodoXForms.Models
         /// </summary>
         /// <param name="target"></param>
         /// <returns></returns>
-        public ToDo Copy( ToDo target = null )
+        public ToDo Copy(ToDo target = null)
         {
             if (target == null)
             {
@@ -76,6 +107,21 @@ namespace SampleTodoXForms.Models
             target.Completed = this.Completed;
             target.CreatedAt = this.CreatedAt;
             return target;
+        }
+        /// <summary>
+        /// 初期化メソッド
+        /// </summary>
+        /// <returns></returns>
+        public static ToDo CreateNew()
+        {
+            return new ToDo()
+            {
+                Id = "",
+                Text = "New ToDo",
+                DueDate = null,         // 期限なし
+                Completed = false,
+                CreatedAt = DateTime.Now
+            };
         }
     }
 

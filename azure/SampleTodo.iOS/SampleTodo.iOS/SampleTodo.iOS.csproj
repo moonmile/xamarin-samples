@@ -131,7 +131,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Helpers\ObservableObject.cs" />
+    <Compile Include="..\..\SampleTodo.XForms\SampleTodoXForms\SampleTodoXForms\Helpers\ObservableObject.cs">
+      <Link>Helpers\ObservableObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\SampleTodo.XForms\SampleTodoXForms\SampleTodoXForms\Models\ToDo.cs">
+      <Link>Models\ToDo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\SampleTodo.XForms\SampleTodoXForms\SampleTodoXForms\Models\ToDoFiltableCollection.cs">
+      <Link>Models\ToDoFiltableCollection.cs</Link>
+    </Compile>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
     <Compile Include="MasterViewController.designer.cs">
@@ -142,8 +150,6 @@
     <Compile Include="DetailViewController.designer.cs">
       <DependentUpon>DetailViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\ToDo.cs" />
-    <Compile Include="Models\ToDoFiltableCollection.cs" />
     <Compile Include="SettingViewController.cs" />
     <Compile Include="SettingViewController.designer.cs">
       <DependentUpon>SettingViewController.cs</DependentUpon>

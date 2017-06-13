@@ -26,9 +26,4 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/spOrder" />
-    <Button
-        android:text="戻る"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/buttonBack" />
 </LinearLayout>
