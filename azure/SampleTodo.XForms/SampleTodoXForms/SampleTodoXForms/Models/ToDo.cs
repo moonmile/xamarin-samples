@@ -1,4 +1,5 @@
-﻿using SampleTodoXForms.Helpers;
+﻿using Newtonsoft.Json;
+using SampleTodoXForms.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +41,7 @@ namespace SampleTodoXForms.Models
         /// <summary>
         /// 期日の指定の有無
         /// </summary>
-        [System.Xml.Serialization.XmlIgnore]
+        [JsonIgnore]
         public bool UseDueDate
         {
             get
@@ -66,7 +67,7 @@ namespace SampleTodoXForms.Models
         /// <summary>
         /// 選択型のDatePicker用の変換
         /// </summary>
-        [System.Xml.Serialization.XmlIgnore]
+        [JsonIgnore]
         public DateTime DispDueDate
         {
             get
