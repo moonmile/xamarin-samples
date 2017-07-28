@@ -22,7 +22,6 @@ namespace SampleTodo.Droid
         // URL of the mobile app backend.
         const string applicationURL = @"https://sampletodomobileapp.azurewebsites.net";
 
-
         protected async override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -172,6 +171,7 @@ namespace SampleTodo.Droid
                         var v = data.GetStringExtra("data");
                         var item = Newtonsoft.Json.JsonConvert.DeserializeObject<ToDo>(v);
                         // データを更新する
+                        item.Id = null;
                         await todoTable.InsertAsync(item);
                         // 表示を更新
                         await RefreshItemsFromTableAsync();

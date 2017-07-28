@@ -35,9 +35,16 @@ namespace SampleTodoXForms.Views
             this.BindingContext = viewModel;
             // メッセージの受信の設定
             receiveMessage();
-            RefreshItemsFromTableAsync();
         }
 
+        /// <summary>
+        /// 画面を表示するとき
+        /// </summary>
+        protected async override void OnAppearing()
+        {
+            base.OnAppearing();
+            await RefreshItemsFromTableAsync();
+        }
         /// <summary>
         /// MessagingCenter を利用して、画面間のデータをやり取りする
         /// </summary>
@@ -50,7 +57,7 @@ namespace SampleTodoXForms.Views
                 await RefreshItemsFromTableAsync();
             });
             MessagingCenter.Subscribe<DetailPage, ToDo>(this, "AddItem", async (page, item) => {
-                item.Id = Guid.NewGuid().ToString();
+                item.Id = null;
                 // データを更新する
                 await todoTable.InsertAsync(item);
                 // 表示を更新する

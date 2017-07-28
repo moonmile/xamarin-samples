@@ -130,7 +130,6 @@ namespace SampleTodo.iOS
 		{
 			if (segue.Identifier == "unwindFromDetail")
 			{
-				Console.WriteLine("UnwindToMasterView in Master from Detail");
 				// 詳細画面から戻る場合
 				var vc = segue.SourceViewController as DetailViewController;
 				if (vc != null)
@@ -140,7 +139,6 @@ namespace SampleTodo.iOS
             }
 			if (segue.Identifier == "unwindFromSetting")
 			{
-				Console.WriteLine("UnwindToMasterView in Master from Setting");
 				// 設定画面から戻る場合
 				var vc = segue.SourceViewController as SettingViewController;
 				if (vc != null)
@@ -156,6 +154,7 @@ namespace SampleTodo.iOS
             if (item.Id == "")
             {
                 // 新規作成の場合
+                item.Id = null;
                 await todoTable.InsertAsync(item);
             }
             else

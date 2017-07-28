@@ -26,6 +26,35 @@ namespace SampleTodo.Droid
 		
 		public static void UpdateIdValues()
 		{
+			global::Xamarin.Auth._MobileServices.Resource.Animation.slide_in_right = global::SampleTodo.Droid.Resource.Animation.slide_in_right;
+			global::Xamarin.Auth._MobileServices.Resource.Animation.slide_out_left = global::SampleTodo.Droid.Resource.Animation.slide_out_left;
+			global::Xamarin.Auth._MobileServices.Resource.Drawable.ic_arrow_back = global::SampleTodo.Droid.Resource.Drawable.ic_arrow_back;
+			global::Xamarin.Auth._MobileServices.Resource.Id.webview = global::SampleTodo.Droid.Resource.Id.webview;
+			global::Xamarin.Auth._MobileServices.Resource.Layout.activity_webview = global::SampleTodo.Droid.Resource.Layout.activity_webview;
+			global::Xamarin.Auth._MobileServices.Resource.String.ApplicationName = global::SampleTodo.Droid.Resource.String.ApplicationName;
+			global::Xamarin.Auth._MobileServices.Resource.String.Hello = global::SampleTodo.Droid.Resource.String.Hello;
+			global::Xamarin.Auth._MobileServices.Resource.String.title_activity_webview = global::SampleTodo.Droid.Resource.String.title_activity_webview;
+			global::PCLCrypto.Resource.String.ApplicationName = global::SampleTodo.Droid.Resource.String.ApplicationName;
+			global::PCLCrypto.Resource.String.Hello = global::SampleTodo.Droid.Resource.String.Hello;
+		}
+		
+		public partial class Animation
+		{
+			
+			// aapt resource value: 0x7f040000
+			public const int slide_in_right = 2130968576;
+			
+			// aapt resource value: 0x7f040001
+			public const int slide_out_left = 2130968577;
+			
+			static Animation()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Animation()
+			{
+			}
 		}
 		
 		public partial class Attribute
@@ -45,10 +74,13 @@ namespace SampleTodo.Droid
 		{
 			
 			// aapt resource value: 0x7f020000
-			public const int Icon = 2130837504;
+			public const int ic_arrow_back = 2130837504;
 			
 			// aapt resource value: 0x7f020001
-			public const int sample = 2130837505;
+			public const int Icon = 2130837505;
+			
+			// aapt resource value: 0x7f020002
+			public const int sample = 2130837506;
 			
 			static Drawable()
 			{
@@ -63,50 +95,53 @@ namespace SampleTodo.Droid
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f050009
-			public const int buttonNew = 2131034121;
+			// aapt resource value: 0x7f06000a
+			public const int buttonNew = 2131099658;
 			
-			// aapt resource value: 0x7f050001
-			public const int buttonSave = 2131034113;
+			// aapt resource value: 0x7f060002
+			public const int buttonSave = 2131099650;
 			
-			// aapt resource value: 0x7f050008
-			public const int buttonSetting = 2131034120;
+			// aapt resource value: 0x7f060009
+			public const int buttonSetting = 2131099657;
 			
-			// aapt resource value: 0x7f050005
-			public const int editDue = 2131034117;
+			// aapt resource value: 0x7f060006
+			public const int editDue = 2131099654;
 			
-			// aapt resource value: 0x7f050003
-			public const int editText = 2131034115;
+			// aapt resource value: 0x7f060004
+			public const int editText = 2131099652;
 			
-			// aapt resource value: 0x7f05000a
-			public const int listView = 2131034122;
+			// aapt resource value: 0x7f06000b
+			public const int listView = 2131099659;
 			
-			// aapt resource value: 0x7f05000e
-			public const int spOrder = 2131034126;
+			// aapt resource value: 0x7f06000f
+			public const int spOrder = 2131099663;
 			
-			// aapt resource value: 0x7f050006
-			public const int swCompleted = 2131034118;
+			// aapt resource value: 0x7f060007
+			public const int swCompleted = 2131099655;
 			
-			// aapt resource value: 0x7f05000c
-			public const int swDispCompleted = 2131034124;
+			// aapt resource value: 0x7f06000d
+			public const int swDispCompleted = 2131099661;
 			
-			// aapt resource value: 0x7f050004
-			public const int swDue = 2131034116;
+			// aapt resource value: 0x7f060005
+			public const int swDue = 2131099653;
 			
-			// aapt resource value: 0x7f050007
-			public const int textCreateAt = 2131034119;
+			// aapt resource value: 0x7f060008
+			public const int textCreateAt = 2131099656;
 			
-			// aapt resource value: 0x7f050002
-			public const int textId = 2131034114;
+			// aapt resource value: 0x7f060003
+			public const int textId = 2131099651;
 			
-			// aapt resource value: 0x7f05000b
-			public const int textView1 = 2131034123;
+			// aapt resource value: 0x7f06000c
+			public const int textView1 = 2131099660;
 			
-			// aapt resource value: 0x7f05000d
-			public const int textView2 = 2131034125;
+			// aapt resource value: 0x7f06000e
+			public const int textView2 = 2131099662;
 			
-			// aapt resource value: 0x7f050000
-			public const int toolbar1 = 2131034112;
+			// aapt resource value: 0x7f060001
+			public const int toolbar1 = 2131099649;
+			
+			// aapt resource value: 0x7f060000
+			public const int webview = 2131099648;
 			
 			static Id()
 			{
@@ -122,13 +157,16 @@ namespace SampleTodo.Droid
 		{
 			
 			// aapt resource value: 0x7f030000
-			public const int Detail = 2130903040;
+			public const int activity_webview = 2130903040;
 			
 			// aapt resource value: 0x7f030001
-			public const int Main = 2130903041;
+			public const int Detail = 2130903041;
 			
 			// aapt resource value: 0x7f030002
-			public const int Setting = 2130903042;
+			public const int Main = 2130903042;
+			
+			// aapt resource value: 0x7f030003
+			public const int Setting = 2130903043;
 			
 			static Layout()
 			{
@@ -143,11 +181,14 @@ namespace SampleTodo.Droid
 		public partial class String
 		{
 			
-			// aapt resource value: 0x7f040001
-			public const int ApplicationName = 2130968577;
+			// aapt resource value: 0x7f050001
+			public const int ApplicationName = 2131034113;
 			
-			// aapt resource value: 0x7f040000
-			public const int Hello = 2130968576;
+			// aapt resource value: 0x7f050000
+			public const int Hello = 2131034112;
+			
+			// aapt resource value: 0x7f050002
+			public const int title_activity_webview = 2131034114;
 			
 			static String()
 			{
