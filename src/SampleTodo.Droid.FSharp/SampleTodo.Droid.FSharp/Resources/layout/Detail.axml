@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+  <Toolbar
+      android:background="?android:attr/colorPrimary"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/toolbar1"
+      android:minWidth="25px"
+      android:minHeight="25px">
+    <Button
+        android:text="保存"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonSave" />
+  </Toolbar>
+  <TextView
+      android:text="ID"
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" />
+  <TextView
+      android:text=""
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/textId" />
+  <TextView
+      android:text="項目名"
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" />
+  <EditText
+      android:text=""
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/editText" />
+  <TextView
+      android:text="期日"
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" />
+  <Switch
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/swDue" />
+  <EditText
+      android:inputType="date"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/editDue" />
+  <TextView
+      android:text="完了"
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" />
+  <Switch
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/swCompleted" />
+  <TextView
+      android:text="作成日"
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" />
+  <TextView
+      android:text=""
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:id="@+id/textCreateAt" />
+</LinearLayout>
