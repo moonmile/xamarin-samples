@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SampleTodoXForms.Views.SettingPage">
+    <ContentPage.Content>
+        <StackLayout Spacing="20" Padding="15">
+            <Label Text="完了項目の表示" FontSize="Medium" />
+            <Switch IsToggled="{Binding DispCompleted}" />
+            <Label Text="表示順" FontSize="Medium" />
+            <Picker 
+                ItemsSource="{Binding SortItems}"
+                SelectedIndex="{Binding SortOrder}"  />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
+    
